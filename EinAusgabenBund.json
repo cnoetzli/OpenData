@@ -259,7 +259,7 @@
                     },
                     {"name": "Verkehrsabgaben",
                       "children": [
-                        {"name": "Automobilsteuer", "size": 3363089508.000},
+                        {"name": "Automobilsteuer", "size": 363089508.000},
                         {"name": "Nationalstrassenabgabe", "size": 332655020.450},
                         {"name": "Schwerverkehrsabgabe", "size": 1441201864.830}
                       ]
@@ -362,7 +362,7 @@
             {"name": "Landesverteidigung",
               "children": [
                 {"name": "Militärische Landesverteidigung", "size": 4439319885.950},
-                {"name": "Bevölkerungsschutz und Zivildienst", "size": 108921368.60}
+                {"name": "Bevölkerungsschutz und Zivildienst", "size": 108921368.600}
               ]
             },
             {"name": "Bildung und Forschung",
@@ -414,7 +414,7 @@
             {"name": "Landwirtschaft und Ernährung", "size": 3550872953.600},
             {"name": "Wirtschaft",
               "children": [
-                {"name": "Wirtschaftsordnung", "size": 1159556858.70},
+                {"name": "Wirtschaftsordnung", "size": 159556858.700},
                 {"name": "Standortförd., Regionalpolitik, wirtsch. Landesversorgung", "size": 130786572.450},
                 {"name": "Energie", "size": 89750538.400}
               ]

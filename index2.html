@@ -38,6 +38,11 @@
         font-size: 1.5em;
     }
 
+    #gesamtEinAus {
+        font-weight: 600;
+        font-size: 1.5em;
+    }
+
 </style>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
@@ -55,8 +60,9 @@
             </div>
         </div>
     </div>
+    <span id="gesamtEinAus"></span>
 
-    <select id="leave" onchange="EinAusagben()">
+    <select id="einaus" onchange="EinAusagben()">
         <option value="0">Einnahmen</option>
         <option value="1">Ausgaben nach Aufgabengebiet</option>
     </select>
@@ -166,6 +172,8 @@
             .on("click", click);
 
         totalSize = path.node().__data__.value;
+
+        d3.select("#gesamtEinAus").text(totalSize);
     };
 
     // Fade all but the current sequence, and show it in the breadcrumb trail.
@@ -194,7 +202,7 @@
             .style("visibility", "");
 
         var sequenceArray = getAncestors(d);
-        updateBreadcrumbs(sequenceArray, percentageString);
+        updateBreadcrumbs(sequenceArray, valueString);
 
         // Fade all the segments.
         d3.selectAll("path")
@@ -303,7 +311,7 @@
     }
 
     function EinAusagben() {
-        if (document.getElementById("leave").value == "1"){
+        if (document.getElementById("einaus").value == "1"){
             EinAus = 1;
         }
         else{
@@ -313,7 +321,7 @@
     }
 
     function newYear() {
-        if (document.getElementById("leave").value == "1"){
+        if (document.getElementById("year").value == "1"){
             Year = 1;
         }
         else{
@@ -346,6 +354,7 @@
             .style("opacity", 1)
             .on("mouseover", mouseover);
 
+        d3.select("#gesamtEinAus").text(root.value);
     }
 
 </script>

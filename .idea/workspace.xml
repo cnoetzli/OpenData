@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="95f88cec-2140-4350-857e-71c7500d4c5e" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/index4.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/EinAusgabenBund.json" afterPath="$PROJECT_DIR$/EinAusgabenBund.json" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index2.html" afterPath="$PROJECT_DIR$/index2.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index3.html" afterPath="$PROJECT_DIR$/index3.html" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -30,21 +28,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index2.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="index2.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/index2.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="646">
-              <caret line="165" column="32" lean-forward="false" selection-start-line="165" selection-start-column="32" selection-end-line="165" selection-end-column="32" />
+            <state relative-caret-position="-442">
+              <caret line="196" column="31" lean-forward="true" selection-start-line="196" selection-start-column="31" selection-end-line="196" selection-end-column="31" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="EinAusgabenBund.json" pinned="false" current-in-tab="false">
+      <file leaf-file-name="EinAusgabenBund.json" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/EinAusgabenBund.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1394">
-              <caret line="223" column="40" lean-forward="true" selection-start-line="223" selection-start-column="40" selection-end-line="223" selection-end-column="40" />
+            <state relative-caret-position="425">
+              <caret line="382" column="15" lean-forward="true" selection-start-line="382" selection-start-column="15" selection-end-line="382" selection-end-column="15" />
               <folding />
             </state>
           </provider>
@@ -70,6 +68,7 @@
         <option value="$PROJECT_DIR$/index4.html" />
         <option value="$PROJECT_DIR$/index3.html" />
         <option value="$PROJECT_DIR$/index2.html" />
+        <option value="$PROJECT_DIR$/EinAusgabenBund.json" />
       </list>
     </option>
   </component>
@@ -221,12 +220,12 @@
       <workItem from="1522242870894" duration="4584000" />
       <workItem from="1525252244673" duration="52000" />
       <workItem from="1526466064761" duration="93000" />
-      <workItem from="1526471758515" duration="9941000" />
+      <workItem from="1526471758515" duration="12636000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="14670000" />
+    <option name="totallyTimeSpent" value="17365000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="2576" height="1416" extended-state="6" />
@@ -310,14 +309,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/EinAusgabenBund.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1394">
-          <caret line="223" column="40" lean-forward="true" selection-start-line="223" selection-start-column="40" selection-end-line="223" selection-end-column="40" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/index3.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="289">
@@ -328,8 +319,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/index2.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="646">
-          <caret line="165" column="32" lean-forward="false" selection-start-line="165" selection-start-column="32" selection-end-line="165" selection-end-column="32" />
+        <state relative-caret-position="-442">
+          <caret line="196" column="31" lean-forward="true" selection-start-line="196" selection-start-column="31" selection-end-line="196" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/EinAusgabenBund.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="382" column="15" lean-forward="true" selection-start-line="382" selection-start-column="15" selection-end-line="382" selection-end-column="15" />
           <folding />
         </state>
       </provider>
