@@ -35,7 +35,7 @@
     }
 
     #percentage {
-        font-size: 2.5em;
+        font-size: 1.5em;
     }
 
 </style>
@@ -55,6 +55,16 @@
             </div>
         </div>
     </div>
+
+    <select id="leave" onchange="EinAusagben()">
+        <option value="0">Einnahmen</option>
+        <option value="1">Ausgaben nach Aufgabengebiet</option>
+    </select>
+
+    <select id="year" onchange="newYear()">
+        <option value="0">2007</option>
+        <option value="1">2008</option>
+    </select>
 </body>
 
 <script>
@@ -62,6 +72,11 @@
     var width = 550;
     var height = 550;
     var radius = Math.min(width, height) / 2;
+
+    var rootOriginal = [];
+
+    var EinAus = 0;
+    var Year =0;
 
     // Breadcrumb dimensions: width, height, spacing, width of tip/tail.
     var b = {
@@ -96,15 +111,25 @@
         .innerRadius(function(d) { return Math.max(0, y(d.y)); })
         .outerRadius(function(d) { return Math.max(0, y(d.y + d.dy)); });
 
-    json = getData();
-    createVisualization(json);
+
+    d3.json("EinAusgabenBund.json", function(error, root) {
+        if (error) throw error;
+
+        rootOriginal = root;
+
+        createVisualization(Year,EinAus);
+    });
 
 
     // Main function to draw and set up the visualization, once we have the data.
-    function createVisualization(json) {
+    function createVisualization(currentYear,EinnahmenAusgaben) {
+
+        root = rootOriginal.children[currentYear].children[EinnahmenAusgaben];
 
         // Basic setup of page elements.
         initializeBreadcrumbTrail();
+
+        vis.selectAll("circle").remove();
 
         // Bounding circle underneath the sunburst, to make it easier to detect
         // when the mouse leaves the parent g.
@@ -113,8 +138,7 @@
             .style("opacity", 0);
 
         // For efficiency, filter nodes to keep only those large enough to see.
-        var nodes = partition.nodes(json);
-
+        var nodes = partition.nodes(root);
 
         var uniqueNames = (function(a) {
             var output = [];
@@ -129,7 +153,7 @@
         // set domain of colors scale based on data
         colors.domain(uniqueNames);
 
-        var path = vis.data([json]).selectAll("path")
+        var path = vis.data([root]).selectAll("path")
             .data(nodes)
             .enter()
             .append("path")
@@ -138,26 +162,31 @@
             .attr("fill-rule", "evenodd")
             .style("fill", function(d) { return colors(d.name); })
             .style("opacity", 1)
-            .on("mouseover", mouseover);
+            .on("mouseover", mouseover)
+            .on("click", click);
 
-        // Add the mouseleave handler to the bounding circle.
-        d3.select("#container").on("mouseleave", mouseleave);
-
-        // Get total size of the tree = value of root node from partition.
         totalSize = path.node().__data__.value;
     };
 
     // Fade all but the current sequence, and show it in the breadcrumb trail.
     function mouseover(d) {
 
-        var percentage = (100 * d.value / totalSize).toPrecision(3);
-        var percentageString = percentage + "%";
-        if (percentage < 0.1) {
-            percentageString = "< 0.1%";
+        var value;
+        var valueString;
+        if(d.value > 1000000000) {
+            value = (d.value / 1000000000).toPrecision(4);
+            valueString = value + " Mia."
+        } else {
+            if(d.value > 1000000) {
+                value = (d.value / 1000000).toPrecision(5);
+                valueString = value + " Mio."
+            } else {
+                valueString = value + "< 1 Mio."
+            }
         }
 
         d3.select("#percentage")
-            .text(percentageString);
+            .text(valueString);
 
         d3.select("#currentTopic").text(d.name);
 
@@ -177,31 +206,6 @@
                 return (sequenceArray.indexOf(node) >= 0);
             })
             .style("opacity", 1);
-    }
-
-    // Restore everything to full opacity when moving off the visualization.
-    function mouseleave(d) {
-
-        // Hide the breadcrumb trail
-        d3.select("#trail")
-            .style("visibility", "hidden");
-
-        // Deactivate all segments during transition.
-        d3.selectAll("path").on("mouseover", null);
-
-        // Transition each segment to full opacity and then reactivate it.
-        d3.selectAll("path")
-            .transition()
-            .duration(1000)
-            .style("opacity", 1)
-            .each("end", function() {
-                d3.select(this).on("mouseover", mouseover);
-            });
-
-        d3.select("#explanation")
-            .transition()
-            .duration(1000)
-            .style("visibility", "hidden");
     }
 
     // Given a node in a partition layout, return an array of all of its ancestor
@@ -254,10 +258,6 @@
         // Add breadcrumb and label for entering nodes.
         var entering = g.enter().append("g");
 
-        entering.append("polygon")
-            .attr("points", breadcrumbPoints)
-            .style("fill", function(d) { return colors(d.name); });
-
         entering.append("text")
             .attr("x", (b.w + b.t) / 2)
             .attr("y", b.h / 2)
@@ -287,222 +287,65 @@
 
     }
 
-    function getData() {
-        return {
-            "name": "2007",
-            "children": [
-                {"name": "Einnahmen",
-                    "children": [
-                        {"name": "Ertrag",
-                            "children": [
-                                {"name": "Fiskalertrag",
-                                    "children": [
-                                        {"name": "Direkte Bundessteuer",
-                                            "children": [
-                                                {"name": "Steuer auf Reingewinn juristischer Personen", "size": 6860036346.000},
-                                                {"name": "Steuer auf Einkommen natürlicher Personen", "size": 8528864409.910}
-                                            ]
-                                        },
-                                        {"name": "Verrechnungssteuer",
-                                            "children": [
-                                                {"name": "Verrechnungssteuer (Schweiz)", "size": 2710501973.540},
-                                                {"name": "Steuerrückbehalt USA", "size": 19402362.780}
-                                            ]
-                                        },
-                                        {"name": "Stempelabgaben",
-                                            "children": [
-                                                {"name": "Emissionsabgabe", "size": 405076103.210},
-                                                {"name": "Umsatzabgabe", "size": 1939932780.450},
-                                                {"name": "Prämienquittungsstempel und Übrige", "size": 644546345.520}
-                                            ]
-                                        },
-                                        {"name": "Mehrwertsteuer",
-                                            "children": [
-                                                {"name": "Allgemeine Bundesmittel", "size": 15958549078.800},
-                                                {"name": "Zweckgebundene Mittel", "size": 3725919467.270}
-                                            ]
-                                        },
-                                        {"name": "Übrige Verbrauchssteuern",
-                                            "children": [
-                                                {"name": "Tabaksteuer", "size": 2186396807.000},
-                                                {"name": "Biersteuer", "size": 107155215.000},
-                                                {"name": "Spirituosensteuer", "size": 0},
-                                                {"name": "Mineralölsteuer", "size": 5086218541.000},
-                                                {"name": "Netzzuschlag", "size": 0}
-                                            ]
-                                        },
-                                        {"name": "Verkehrsabgaben",
-                                            "children": [
-                                                {"name": "Automobilsteuer", "size": 357991792.000},
-                                                {"name": "Nationalstrassenabgabe", "size": 321663541.610},
-                                                {"name": "Schwerverkehrsabgabe", "size": 1336369578.000}
-                                            ]
-                                        },
-                                        {"name": "Zölle", "size": 1040330743.000},
-                                        {"name": "Spielbankenabgaben", "size": 448595989.240},
-                                        {"name": "Lenkungsabgaben",
-                                            "children": [
-                                                {"name": "Lenkungsabgabe VOC", "size": 126738996.000},
-                                                {"name": "Lenkungsabgaben Heizöl, Benzin und Dieselöl", "size": 401472.000},
-                                                {"name": "Altlastenabgabe", "size": 28452744.900},
-                                                {"name": "Lenkungsabgabe CO2", "size": 0}
-                                            ]
-                                        },
-                                        {"name": "Übriger Fiskalertrag", "size": 3135154.800}
-                                    ]
-                                },
-                                {"name": "Regalien und Konzessionen",
-                                    "children": [
-                                        {"name": "Anteil am Reingewinn der Alkoholverwaltung", "size": 222721557.000},
-                                        {"name": "Gewinnausschüttung SNB", "size": 833333333.000},
-                                        {"name": "Übrige Erträge aus Regalien und Konzessionen", "size": 274480856.550}
-                                    ]
-                                },
-                                {"name": "Entgelte",
-                                    "children": [
-                                        {"name": "Wehrpflichtersatzabgabe", "size": 137956411.200},
-                                        {"name": "Gebühren", "size": 291206334.250},
-                                        {"name": "Entgelte für Benutzungen und Dienstleistungen", "size": 73298960.930},
-                                        {"name": "Verkäufe", "size": 196217286.870},
-                                        {"name": "Rückerstattungen", "size": 112653377.040},
-                                        {"name": "EU Zinsbesteuerung", "size": 120761811.390},
-                                        {"name": "Übrige Entgelte", "size": 455012220.420}
-                                    ]
-                                },
-                                {"name": "Verschiedener Ertrag",
-                                    "children": [
-                                        {"name": "Liegenschaftenertrag", "size": 315464642.950},
-                                        {"name": "Gewinne auf Sach- und immateriellen Anlagen", "size": 58177755.840},
-                                        {"name": "Erträge aus Drittmitteln und Kofinanzierungen", "size": 0},
-                                        {"name": "Aktivierungen", "size": 22600435.380},
-                                        {"name": "Übernahme Nationalstrassen", "size": 0},
-                                        {"name": "Übriger verschiedener Ertrag", "size": 60513417.940}
-                                    ]
-                                },
-                                {"name": "Finanzertrag",
-                                    "children": [
-                                        {"name": "Zinsertrag", "size": 689662677.140},
-                                        {"name": "Kursgewinne", "size": 96448940.650},
-                                        {"name": "Beteiligungsertrag", "size": 884397.400},
-                                        {"name": "Gewinne auf Darlehen und Beteiligungen", "size": 1530000.000},
-                                        {"name": "Zunahme von Equitywerten", "size": 1859977241.280},
-                                        {"name": "Verschiedener Finanzertrag", "size": 320389698.690}
-                                    ]
-                                },
-                                {"name": "Einnahme aus zweckgebundenen Fonds im FK", "size": 20613454.100},
-                                {"name": "Ausserordentlicher Ertrag", "size": 629651753.070}
-                            ]
-                        },
-                        {"name": "Investitionseinnahmen",
-                            "children": [
-                                {"name": "Veräusserung von Sachanlagen", "size": 74400410.130},
-                                {"name": "Veräusserung immaterielle Anlagen", "size": 0},
-                                {"name": "Rückzahlung Darlehen", "size": 289461687.740},
-                                {"name": "Veräusserung Beteiligungen", "size": 885000.000},
-                                {"name": "Rückzahlung eigener Investitionsbeiträge", "size": 218861.090},
-                                {"name": "Durchlaufende Investitionsbeiträge", "size": 0},
-                                {"name": "Ausserordentliche Investitionseinnahmen", "size": 754310554.350}
-                            ]
-                        }
-                    ]
-                },
-                {"name": "Ausgaben nach Aufgabengebiet",
-                    "children": [
-                        {"name": "Institutionelle und finanzielle Voraussetzungen",
-                            "children": [
-                                {"name": "Unterstützung Legislative und Exekutive", "size": 270610124.380},
-                                {"name": "Steuerpolitik", "size": 535646955.130},
-                                {"name": "Ressourcen- und Verwaltungssteuerung", "size": 110456201.330},
-                                {"name": "Interne Dienstleistungen", "size": 1004556451.700},
-                                {"name": "Auswertung und Erhebung von Daten", "size": 229430454.450}
-                            ]
-                        },
-                        {"name": "Ordnung und öffentliche Sicherheit",
-                            "children": [
-                                {"name": "Allgemeines Rechtswesen", "size": 78079725.490},
-                                {"name": "Polizei, Strafverfolgung und -vollzug, Nachrichtendienst", "size": 311293880.680},
-                                {"name": "Grenzkontrollen", "size": 282057113.640},
-                                {"name": "Gerichte", "size": 141426100.840}
-                            ]
-                        },
-                        {"name": "Beziehungen zum Ausland - Internationale Zusammenarbeit",
-                            "children": [
-                                {"name": "Politische Beziehungen", "size": 535133715.170},
-                                {"name": "Entwicklungshilfe (Süd- und Ostländer)", "size": 1637062318.600},
-                                {"name": "Wirtschaftliche Beziehungen", "size": 71454195.610},
-                                {"name": "Hilfe an Ostländer und Erweiterung der EU", "size": 29989878.420}
-                            ]
-                        },
-                        {"name": "Landesverteidigung",
-                            "children": [
-                                {"name": "Militärische Landesverteidigung", "size": 4231202775.880},
-                                {"name": "Bevölkerungsschutz und Zivildienst", "size": 106578871.960}
-                            ]
-                        },
-                        {"name": "Bildung und Forschung",
-                            "children": [
-                                {"name": "Berufsbildung", "size": 518180800.710},
-                                {"name": "Hochschulen", "size": 1563778495.090},
-                                {"name": "Grundlagenforschung", "size": 1834315243.350},
-                                {"name": "Angewandte Forschung", "size": 1001702407.370},
-                                {"name": "Übriges Bildungswesen", "size": 59763368.580}
-                            ]
-                        },
-                        {"name": "Kultur und Freizeit",
-                            "children": [
-                                {"name": "Kulturerhaltung", "size": 94051521.950},
-                                {"name": "Kulturförderung", "size": 123433454.650},
-                                {"name": "Sport", "size": 140200766.590},
-                                {"name": "Medienpolitik", "size": 101919604.680}
-                            ]
-                        },
-                        {"name": "Gesundheit", "size": 264116029.930},
-                        {"name": "Soziale Wohlfahrt",
-                            "children": [
-                                {"name": "Altersversicherung", "size": 7984391072.290},
-                                {"name": "Invalidenversicherung", "size": 4492450766.840},
-                                {"name": "Krankenversicherung", "size": 2262787658.450},
-                                {"name": "Ergänzungsleistungen", "size": 711171838.100},
-                                {"name": "Militärversicherung", "size": 231633257.360},
-                                {"name": "Arbeitslosenversicherung / Arbeitsvermittlung", "size": 302099229.600},
-                                {"name": "Sozialer Wohnungsbau / Wohnbauförderung", "size": 109523262.920},
-                                {"name": "Migration", "size": 791099659.470},
-                                {"name": "Familienpolitik, Gleichstellung", "size": 48093970.590}
-                            ]
-                        },
-                        {"name": "Verkehr",
-                            "children": [
-                                {"name": "Strassenverkehr", "size": 2751355606.030},
-                                {"name": "Schienenverkehr und öffentlicher Verkehr", "size": 4507226836.790},
-                                {"name": "Luftfahrt", "size": 89944308.470}
-                            ]
-                        },
-                        {"name": "Umwelt und Raumordnung",
-                            "children": [
-                                {"name": "Umwelt", "size": 319942631.230},
-                                {"name": "Schutz vor Naturgefahren", "size": 255788090.010},
-                                {"name": "Naturschutz", "size": 107248808.370},
-                                {"name": "Raumordnung", "size": 12165454.210}
-                            ]
-                        },
-                        {"name": "Landwirtschaft und Ernährung", "size": 3601158498.200},
-                        {"name": "Wirtschaft",
-                            "children": [
-                                {"name": "Wirtschaftsordnung", "size": 147874544.170},
-                                {"name": "Standortförd., Regionalpolitik, wirtsch. Landesversorgung", "size": 128861465.530},
-                                {"name": "Energie", "size": 80691274.660}
-                            ]
-                        },
-                        {"name": "Finanzen und Steuern",
-                            "children": [
-                                {"name": "Anteile an Bundeseinnahmen", "size": 5750456469.640},
-                                {"name": "Geldbeschaffung, Vermögens- und Schuldenverwaltung", "size": 4002706515.920},
-                                {"name": "Finanzausgleich", "size": 0}
-                            ]
-                        }
-                    ]
-                }
-            ]
-        };
-    };
+    function click(d) {
+        updateBreadcrumbs(getAncestors(d), d.value);
+
+        vis.transition()
+            .duration(750)
+            .tween("scale", function() {
+                var xd = d3.interpolate(x.domain(), [d.x0, d.x1]),
+                    yd = d3.interpolate(y.domain(), [d.y0, 1]),
+                    yr = d3.interpolate(y.range(), [d.y0 ? 20 : 0, radius]);
+                return function(t) { x.domain(xd(t)); y.domain(yd(t)).range(yr(t)); };
+            })
+            .selectAll("path")
+            .attrTween("d", function(d) { return function() { return arc(d); }; });
+    }
+
+    function EinAusagben() {
+        if (document.getElementById("leave").value == "1"){
+            EinAus = 1;
+        }
+        else{
+            EinAus = 0;
+        }
+        updateVisualization(Year,EinAus);
+    }
+
+    function newYear() {
+        if (document.getElementById("leave").value == "1"){
+            Year = 1;
+        }
+        else{
+            Year = 0;
+        }
+        updateVisualization(Year,EinAus);
+    }
+
+    function updateVisualization(currentYear,EinnahmenAusgaben){
+
+        root = rootOriginal.children[currentYear].children[EinnahmenAusgaben];
+
+        var newPath = vis.selectAll("path").data([root]);
+
+        newPath.exit().remove();
+
+        newPath.attr("class", "update");
+
+
+        var nodes = partition.nodes(root);
+
+        vis.data([root]).selectAll("path")
+            .data(nodes)
+            .enter()
+            .append("path")
+            .attr("display", function(d) { return d.depth ? null : "none"; })
+            .attr("d", arc)
+            .attr("fill-rule", "evenodd")
+            .style("fill", function(d) { return colors(d.name); })
+            .style("opacity", 1)
+            .on("mouseover", mouseover);
+
+    }
+
 </script>
