@@ -39,18 +39,27 @@
     }
 
     #gesamtEinAus {
-        font-weight: 600;
+        color: #666;
         font-size: 1.5em;
+        text-align: center;
     }
+    #titleEinAus {
+        color: #666;
+        font-size: 1.5em;
+        text-align: center;
+    }
+
+
 
 </style>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <script src="//d3js.org/d3.v3.min.js"></script>
-<link rel="stylesheet" href="burger.css">
 <body>
 
     <div class="container">
+        <span id="titleEinAus"></span><br/>
+        <span id="gesamtEinAus"></span>
         <div class="content">
             <div id="chart">
                 <div id="explanation" style="visibility: hidden;">
@@ -60,17 +69,20 @@
             </div>
         </div>
     </div>
-    <span id="gesamtEinAus"></span>
+
 
     <select id="einaus" onchange="EinAusagben()">
         <option value="0">Einnahmen</option>
         <option value="1">Ausgaben nach Aufgabengebiet</option>
     </select>
 
+
     <select id="year" onchange="newYear()">
         <option value="0">2007</option>
         <option value="1">2008</option>
     </select>
+
+
 </body>
 
 <script>
@@ -132,9 +144,6 @@
 
         root = rootOriginal.children[currentYear].children[EinnahmenAusgaben];
 
-        // Basic setup of page elements.
-        initializeBreadcrumbTrail();
-
         vis.selectAll("circle").remove();
 
         // Bounding circle underneath the sunburst, to make it easier to detect
@@ -165,7 +174,6 @@
             .append("path")
             .attr("display", function(d) { return d.depth ? null : "none"; })
             .attr("d", arc)
-            .attr("fill-rule", "evenodd")
             .style("fill", function(d) { return colors(d.name); })
             .style("opacity", 1)
             .on("mouseover", mouseover)
@@ -173,8 +181,10 @@
 
         totalSize = path.node().__data__.value;
 
-        d3.select("#gesamtEinAus").text(totalSize);
+        d3.select("#gesamtEinAus").text((root.value/ 1000000000).toPrecision(4) + " Mia., " + root.name);
     };
+
+
 
     // Fade all but the current sequence, and show it in the breadcrumb trail.
     function mouseover(d) {
@@ -228,32 +238,7 @@
         return path;
     }
 
-    function initializeBreadcrumbTrail() {
-        // Add the svg area.
-        var trail = d3.select("#sequence").append("svg")
-            .attr("width", width)
-            .attr("height", 50)
-            .attr("id", "trail");
-        // Add the label at the end, for the percentage.
-        trail.append("text")
-            .attr("id", "endlabel")
-            .style("fill", "#000");
-    }
 
-
-    // Generate a string that describes the points of a breadcrumb polygon.
-    function breadcrumbPoints(d, i) {
-        var points = [];
-        points.push("0,0");
-        points.push(b.w + ",0");
-        points.push(b.w + b.t + "," + (b.h / 2));
-        points.push(b.w + "," + b.h);
-        points.push("0," + b.h);
-        if (i > 0) { // Leftmost breadcrumb; don't include 6th vertex.
-            points.push(b.t + "," + (b.h / 2));
-        }
-        return points.join(" ");
-    }
 
     // Update the breadcrumb trail to show the current sequence and percentage.
     function updateBreadcrumbs(nodeArray, percentageString) {
@@ -296,18 +281,30 @@
     }
 
     function click(d) {
-        updateBreadcrumbs(getAncestors(d), d.value);
+        updateAfterClick(d);
+    }
 
-        vis.transition()
-            .duration(750)
-            .tween("scale", function() {
-                var xd = d3.interpolate(x.domain(), [d.x0, d.x1]),
-                    yd = d3.interpolate(y.domain(), [d.y0, 1]),
-                    yr = d3.interpolate(y.range(), [d.y0 ? 20 : 0, radius]);
-                return function(t) { x.domain(xd(t)); y.domain(yd(t)).range(yr(t)); };
-            })
-            .selectAll("path")
-            .attrTween("d", function(d) { return function() { return arc(d); }; });
+    function updateAfterClick(root){
+        var newPath = vis.selectAll("path").data([root]);
+
+        newPath.exit().remove();
+
+        newPath.attr("class", "update");
+
+        var nodes = partition.nodes(root);
+
+        vis.data([root]).selectAll("path")
+            .data(nodes)
+            .enter()
+            .append("path")
+            .attr("display", function(d) { return d.depth ? null : "none"; })
+            .attr("d", arc)
+            .style("fill", function(d) { return colors(d.name); })
+            .style("opacity", 1)
+            .on("mouseover", mouseover)
+            .on("click", click);
+
+        d3.select("#gesamtEinAus").text((root.value/ 1000000000).toPrecision(4) + " Mia., " + root.name);
     }
 
     function EinAusagben() {
@@ -352,9 +349,21 @@
             .attr("fill-rule", "evenodd")
             .style("fill", function(d) { return colors(d.name); })
             .style("opacity", 1)
-            .on("mouseover", mouseover);
+            .on("mouseover", mouseover)
+            .on("click", click);
 
-        d3.select("#gesamtEinAus").text(root.value);
+        d3.select("#gesamtEinAus").text((root.value/ 1000000000).toPrecision(4) + " Mia.");
+    }
+
+
+    function arcTween(newAngle) {
+        return function(d) {
+            var interpolate = d3.interpolate(d.endAngle, newAngle);
+            return function(t) {
+                d.endAngle = interpolate(t);
+                return arc(d);
+            };
+        };
     }
 
 </script>
