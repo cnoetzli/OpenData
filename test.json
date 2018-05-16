@@ -1,0 +1,41 @@
+{
+  "nodes": [
+    	{"id": "Rilke Rainer Maria", "group": 1, "numberOfLetters": 1},
+    	{"id": "Albert-Lasard Lou", "group": 2 , "numberOfLetters": 1},
+    	{"id": "Aman-Volkart Elisabeth", "group": 3, "numberOfLetters": 8},
+    	{"id": "an eine junge Freundin", "group": 4, "numberOfLetters": 1},
+    	{"id": "Bachrach Elvira", "group": 5, "numberOfLetters": 1},
+	{"id": "Bailly Alice", "group": 6, "numberOfLetters": 1},
+	{"id": "Battenberg Anna (Prinzessin)", "group": 7, "numberOfLetters": 1},
+	{"id": "Baumgartner Frieda", "group": 8, "numberOfLetters": 50},
+	{"id": "Baumgartner Rosa", "group": 9, "numberOfLetters": 8},
+	{"id": "Bay Margrit", "group": 10, "numberOfLetters": 2},
+	{"id": "Benemann Maria", "group": 11, "numberOfLetters": 3},
+	{"id": "Blanchisserie Idéale (Lausanne)", "group": 12, "numberOfLetters": 1},
+	{"id": "", "group": 13, "numberOfLetters": 8},
+	{"id": "", "group": 14, "numberOfLetters": 8},
+	{"id": "", "group": 15, "numberOfLetters": 8},
+	{"id": "", "group": 16, "numberOfLetters": 8}
+  ],
+  "links": [
+    	{"source": "Rilke Rainer Maria", "target": "Albert-Lasard Lou", "value": 1},
+    	{"source": "Rilke Rainer Maria", "target": "Aman-Volkart Elisabeth", "value": 8},
+    	{"source": "Rilke Rainer Maria", "target": "an eine junge Freundin", "value": 1},
+    	{"source": "Rilke Rainer Maria", "target": "Bachrach Elvira", "value": 1},
+ 	{"source": "Rilke Rainer Maria", "target": "Bailly Alice", "value": 1},
+	{"source": "Rilke Rainer Maria", "target": "Battenberg Anna (Prinzessin)", "value": 1},
+	{"source": "Rilke Rainer Maria", "target": "Baumgartner Frieda", "value": 50},
+	{"source": "Rilke Rainer Maria", "target": "Baumgartner Rosa", "value": 8},
+	{"source": "Rilke Rainer Maria", "target": "Bay Margrit", "value": 8},
+	{"source": "Rilke Rainer Maria", "target": "Baumgartner Rosa", "value": 8},
+	{"source": "Rilke Rainer Maria", "target": "Benemann Maria", "value": 3},
+	{"source": "Rilke Rainer Maria", "target": "Blanchisserie Idéale (Lausanne)", "value": 1},
+	{"source": "Rilke Rainer Maria", "target": "", "value": 8},
+	{"source": "Rilke Rainer Maria", "target": "", "value": 8},
+	{"source": "Rilke Rainer Maria", "target": "", "value": 8},
+	{"source": "Rilke Rainer Maria", "target": "", "value": 8},
+	{"source": "Rilke Rainer Maria", "target": "", "value": 8},
+	{"source": "Rilke Rainer Maria", "target": "", "value": 8},
+	{"source": "Rilke Rainer Maria", "target": "", "value": 8}
+  ]
+}
