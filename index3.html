@@ -17,7 +17,7 @@
 <body>
 <div id="sequence"></div>
 <span id="currentTopic"></span>
-
+<svg id="graph1"></svg>
 <select id="leave" onchange="change()">
     <option value="0">Einnahmen</option>
     <option value="1">Ausgaben nach Aufgabengebiet</option>
@@ -60,7 +60,7 @@
         .innerRadius(function(d) { return Math.max(0, y(d.y0)); })
         .outerRadius(function(d) { return Math.max(0, y(d.y1)); });
 
-    var svg = d3.select("body").append("svg")
+    var svg = d3.select("svg")
         .attr("width", width)
         .attr("height", height)
         .append("g")
