@@ -16,22 +16,8 @@
         fill: #fff;
     }
 
-    #chart {
-        position: relative;
-    }
-
     #chart path {
         stroke: #fff;
-    }
-
-    #explanation {
-        position: absolute;
-        top: 235px;
-        left: 205px;
-        width: 140px;
-        text-align: center;
-        color: #666;
-        z-index: -1;
     }
 
     #percentage {
@@ -43,10 +29,68 @@
         font-size: 1.5em;
         text-align: center;
     }
+
     #titleEinAus {
         color: #666;
         font-size: 1.5em;
         text-align: center;
+    }
+
+    .panel-body{
+        text-align: center;
+    }
+
+    .panel .panel-default{
+        border: 0;
+    }
+
+    .nav ul {
+        list-style: none;
+        background-color: #444;
+        text-align: center;
+        padding: 0;
+        margin: 0;
+    }
+    .nav li {
+        font-family: 'Oswald', sans-serif;
+        font-size: 1.2em;
+        line-height: 40px;
+        height: 40px;
+        border-bottom: 1px solid #888;
+    }
+
+    .nav a {
+        text-decoration: none;
+        color: #fff;
+        display: block;
+        transition: .3s background-color;
+    }
+
+    .nav a:hover {
+        background-color: #005f5f;
+        text-decoration: none;
+        color: #fff;
+    }
+
+    .nav a.active {
+        background-color: #fff;
+        color: #444;
+        cursor: default;
+    }
+
+    @media screen and (min-width: 600px) {
+        .nav li {
+            width: 120px;
+            border-bottom: none;
+            height: 50px;
+            line-height: 50px;
+            font-size: 1.4em;
+        }
+
+        .nav li {
+            display: inline-block;
+            margin-right: -4px;
+        }
     }
 
 
@@ -56,31 +100,47 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <script src="//d3js.org/d3.v3.min.js"></script>
 <body>
-
+<!--
+    <div class="nav">
+        <ul>
+            <li class="home"><a>Home</a></li>
+            <li class="tutorials"><a>Vergleich</a></li>
+        </ul>
+    </div>-->
     <div class="container">
-        <span id="titleEinAus"></span><br/>
-        <span id="gesamtEinAus"></span>
-        <div class="content">
-            <div id="chart">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <span id="titleEinAus"></span><br/>
+                <span id="gesamtEinAus"></span>
+                <div class="content">
+                    <div id="chart" class="center-block">
+                    </div>
+                    <div id="chart2" class="center-block">
+                    </div>
+                </div>
                 <div id="explanation" style="visibility: hidden;">
-                    <span id="percentage"></span><br/>
+                    <span id="percentage"></span>
                     <span id="currentTopic"></span>
                 </div>
             </div>
         </div>
+
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <select id="einaus" onchange="EinAusagben()">
+                    <option value="0">Einnahmen</option>
+                    <option value="1">Ausgaben nach Aufgabengebiet</option>
+                </select>
+
+
+
+                <select id="year" onchange="newYear()">
+                    <option value="0">2007</option>
+                    <option value="1">2008</option>
+                </select>
+            </div>
+        </div>
     </div>
-
-
-    <select id="einaus" onchange="EinAusagben()">
-        <option value="0">Einnahmen</option>
-        <option value="1">Ausgaben nach Aufgabengebiet</option>
-    </select>
-
-
-    <select id="year" onchange="newYear()">
-        <option value="0">2007</option>
-        <option value="1">2008</option>
-    </select>
 
 
 </body>
@@ -95,6 +155,8 @@
 
     var EinAus = 0;
     var Year =0;
+
+    var yearString = "(2007)";
 
     // Breadcrumb dimensions: width, height, spacing, width of tip/tail.
     var b = {
@@ -181,7 +243,7 @@
 
         totalSize = path.node().__data__.value;
 
-        d3.select("#gesamtEinAus").text((root.value/ 1000000000).toPrecision(4) + " Mia., " + root.name);
+        d3.select("#gesamtEinAus").text((root.value/ 1000000000).toPrecision(4) + " Mia. " + " " + root.name + yearString);
     };
 
 
@@ -304,7 +366,7 @@
             .on("mouseover", mouseover)
             .on("click", click);
 
-        d3.select("#gesamtEinAus").text((root.value/ 1000000000).toPrecision(4) + " Mia., " + root.name);
+        d3.select("#gesamtEinAus").text((root.value/ 1000000000).toPrecision(4) + " Mia. " + root.name + " " + yearString);
     }
 
     function EinAusagben() {
@@ -320,9 +382,11 @@
     function newYear() {
         if (document.getElementById("year").value == "1"){
             Year = 1;
+            yearString = "(2008)";
         }
         else{
             Year = 0;
+            yearString = "(2007)";
         }
         updateVisualization(Year,EinAus);
     }
@@ -352,7 +416,7 @@
             .on("mouseover", mouseover)
             .on("click", click);
 
-        d3.select("#gesamtEinAus").text((root.value/ 1000000000).toPrecision(4) + " Mia.");
+        d3.select("#gesamtEinAus").text((root.value/ 1000000000).toPrecision(4) + " Mia. " + root.name + " " + yearString);
     }
 
 

@@ -1,0 +1,147 @@
+
+.content {
+    padding: 40px 15px;
+}
+
+#sequence {
+    width: 600px;
+    height: 70px;
+}
+
+#sequence text, #legend text {
+    font-weight: 600;
+    fill: #fff;
+}
+
+#chart path {
+    stroke: #fff;
+}
+
+#chart2 path {
+    stroke: #fff;
+}
+
+#percentage {
+    font-size: 1.5em;
+}
+
+#gesamtEinAus {
+    color: #666;
+    font-size: 1.5em;
+    text-align: center;
+}
+
+#titleSeite {
+    color: #666;
+    font-size: 2.5em;
+    text-align: center;
+}
+
+#titleEinAus {
+    color: #666;
+    font-size: 1.5em;
+    text-align: center;
+}
+
+#title {
+    color: #666;
+    font-size: 1.5em;
+    text-align: center;
+}
+#title2 {
+    color: #666;
+    font-size: 1.5em;
+    text-align: center;
+}
+
+
+#explTitle1 {
+    color: #666;
+    font-size: 1.5em;
+    text-align: center;
+}
+#explTitle2 {
+    color: #666;
+    font-size: 1.5em;
+    text-align: center;
+}
+
+#percentage2 {
+    font-size: 1.5em;
+}
+
+#gesamtEinAus2 {
+    color: #666;
+    font-size: 1.5em;
+    text-align: center;
+}
+
+#titleEinAus2 {
+    color: #666;
+    font-size: 1.5em;
+    text-align: center;
+}
+
+#differenz, #differenzGesamt, #differenzTitle, #differenzTitleGesamt {
+    color: #666;
+    font-size: 1.5em;
+    text-align: center;
+}
+
+
+.panel-body{
+    text-align: center;
+}
+
+.panel .panel-default{
+    border: 0;
+}
+
+.nav ul {
+    list-style: none;
+    background-color: #444;
+    text-align: center;
+    padding: 0;
+    margin: 0;
+}
+.nav li {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.2em;
+    line-height: 40px;
+    height: 40px;
+    border-bottom: 1px solid #888;
+}
+
+.nav a {
+    text-decoration: none;
+    color: #fff;
+    display: block;
+    transition: .3s background-color;
+}
+
+.nav a:hover {
+    background-color: #005f5f;
+    text-decoration: none;
+    color: #fff;
+}
+
+.nav a.active {
+    background-color: #fff;
+    color: #444;
+    cursor: default;
+}
+
+@media screen and (min-width: 600px) {
+    .nav li {
+        width: 120px;
+        border-bottom: none;
+        height: 50px;
+        line-height: 50px;
+        font-size: 1.4em;
+    }
+
+    .nav li {
+        display: inline-block;
+        margin-right: -4px;
+    }
+}

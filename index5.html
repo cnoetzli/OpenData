@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="grafik.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="//d3js.org/d3.v3.min.js"></script>
+</head>
+<body>
+
+    <div class="container">
+        <div class="boxes rowA col-xs-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <span id="titleSeite">Bundesfinanzen - Einnahmen und Ausgaben</span><br/>
+                </div>
+            </div>
+        </div>
+        <div class="boxes rowA col-xs-4">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <span id="title">Grafik 1</span>
+                    <div class="content">
+                        <div id="chart" class="center-block">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="boxes rowA col-xs-4">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <span id="explTitle1">Graphik 1</span><br/>
+                    <span id="titleEinAus"></span><br/>
+                    <span id="gesamtEinAus"></span>
+                    <div id="explanation" style="visibility: hidden;">
+                        <span id="percentage"></span>
+                        <span id="currentTopic"></span>
+                    </div>
+                    <br/><br/>
+                    <span id="explTitle2">Graphik 2</span><br/>
+                    <span id="titleEinAus2"></span><br/>
+                    <span id="gesamtEinAus2"></span>
+                    <div id="explanation2" style="visibility: hidden;">
+                        <span id="percentage2"></span>
+                        <span id="currentTopic2"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="boxes rowA col-xs-4">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <span id="title2">Grafik 2</span>
+                    <div class="content">
+                        <div id="chart2" class="center-block">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="boxes rowA col-xs-4">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <select id="einaus" onchange="EinAusagben()">
+                        <option value="0">Einnahmen</option>
+                        <option value="1">Ausgaben nach Aufgabengebiet</option>
+                    </select>
+
+                    <select id="year" onchange="newYear()">
+                        <option value="0">2007</option>
+                        <option value="1">2008</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="boxes rowA col-xs-4">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <span id="differenzTitleGesamt">Differenz Graphik1 - Grafik2 (gesamt)</span><br/>
+                    <span id="differenzGesamt"></span><br/>
+                    <span id="differenzTitle">Differenz Graphik1 - Grafik2 (hover)</span><br/>
+                    <span id="differenz"></span>
+                </div>
+            </div>
+        </div>
+        <div class="boxes rowA col-xs-4">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <select id="einaus2" onchange="EinAusagben2()">
+                        <option value="0">Einnahmen</option>
+                        <option value="1">Ausgaben nach Aufgabengebiet</option>
+                    </select>
+
+                    <select id="year2" onchange="newYear2()">
+                        <option value="0">2007</option>
+                        <option value="1">2008</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="boxes rowA col-xs-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <span>Quelle - Eidgenössische Finanzverwaltung, Bundesfinanzen - Einnahmen und Ausgaben,
+                        <a href="https://www.efv.admin.ch/dam/efv/de/dokumente/Finanzberichte/Daten/OGD/Einnahmen_Ausgaben_Bund.csv.download.csv/Einnahmen_Ausgaben_Bund.csv">Link Daten</a>
+                    </span><br/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+<script src="grafik.js"></script>
