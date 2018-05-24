@@ -429,10 +429,8 @@
           ]
         }
       ]
-    }
-  ]
-},
-{"name": "2009",
+    },
+    {"name": "2009",
       "children": [
         {"name": "Einnahmen",
           "children": [
