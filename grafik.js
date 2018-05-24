@@ -128,8 +128,8 @@ function createVisualization(currentYear,EinnahmenAusgaben) {
     totalSize = path.node().__data__.value;
     totalSize2 = path2.node().__data__.value;
 
-    d3.select("#gesamtEinAus").text((root.value/ 1000000000).toPrecision(4) + " Mia. " + " " + root.name + " " + yearString);
-    d3.select("#gesamtEinAus2").text((root.value/ 1000000000).toPrecision(4) + " Mia. " + " " + root.name + " " + yearString2);
+    d3.select("#gesamtEinAus").text(root.name + " " + yearString + " " + (root.value/ 1000000000).toPrecision(4) + " Mia.");
+    d3.select("#gesamtEinAus2").text(root.name + " " + yearString2 + " " + (root.value/ 1000000000).toPrecision(4) + " Mia.");
     d3.select("#differenzGesamt").text("0 Mio.");
 };
 
@@ -297,90 +297,64 @@ function updateBreadcrumbs(nodeArray, percentageString) {
 }
 
 function click(d) {
-    updateAfterClick(d);
+    updateAfterClick(d,1);
 }
 
 function click2(d) {
-    updateAfterClick2(d);
+    updateAfterClick(d,2);
 }
 
-function updateAfterClick(root){
-    var newPath = vis.selectAll("path").data([root]);
+function updateAfterClick(root, gr){
 
+    if (gr == 1) {
+        var newPath = vis.selectAll("path").data([root]);
+    } else {
+        var newPath = vis2.selectAll("path").data([root]);
+    }
     newPath.exit().remove();
 
     newPath.attr("class", "update");
 
     var nodes = partition.nodes(root);
 
-    vis.data([root]).selectAll("path")
-        .data(nodes)
-        .enter()
-        .append("path")
-        .attr("display", function(d) { return d.depth ? null : "none"; })
-        .attr("d", arc)
-        .style("fill", function(d) { return colors(d.name); })
-        .style("opacity", 1)
-        .on("mouseover", mouseover)
-        .on("click", click);
+    if(gr == 1) {
+        vis.data([root]).selectAll("path")
+            .data(nodes)
+            .enter()
+            .append("path")
+            .attr("display", function (d) {
+                return d.depth ? null : "none";
+            })
+            .attr("d", arc)
+            .style("fill", function (d) {
+                return colors(d.name);
+            })
+            .style("opacity", 1)
+            .on("mouseover", mouseover)
+            .on("click", click);
 
-    total = root.value;
-
-    var valueString;
-    var newValue = total-total2;
-    if(newValue > 1000000000 || newValue < -1000000000) {
-        newValue = (newValue / 1000000000).toPrecision(4);
-        valueString = newValue + " Mia.";
+        total = root.value;
     } else {
-        if (newValue > 1000000 || newValue < -1000000) {
-            newValue = (newValue / 1000000).toPrecision(5);
-            valueString = newValue + " Mio.";
-        } else {
-            valueString = "< 1 Mio.";
-        }
+        vis2.data([root]).selectAll("path")
+            .data(nodes)
+            .enter()
+            .append("path")
+            .attr("display", function(d) { return d.depth ? null : "none"; })
+            .attr("d", arc)
+            .style("fill", function(d) { return colors(d.name); })
+            .style("opacity", 1)
+            .on("mouseover", mouseover2)
+            .on("click", click2);
+
+        total2 = root.value;
     }
+    var valueString = getNewValue();
 
-    d3.select("#gesamtEinAus").text((root.value/ 1000000000).toPrecision(4) + " Mia. " + root.name + " " + yearString);
-    d3.select("#differenzGesamt").text(valueString);
-}
-
-function updateAfterClick2(root){
-    var newPath = vis2.selectAll("path").data([root]);
-
-    newPath.exit().remove();
-
-    newPath.attr("class", "update");
-
-    var nodes = partition.nodes(root);
-
-    vis2.data([root]).selectAll("path")
-        .data(nodes)
-        .enter()
-        .append("path")
-        .attr("display", function(d) { return d.depth ? null : "none"; })
-        .attr("d", arc)
-        .style("fill", function(d) { return colors(d.name); })
-        .style("opacity", 1)
-        .on("mouseover", mouseover2)
-        .on("click", click2);
-
-    total2 = root.value;
-
-    var valueString;
-    var newValue = total-total2;
-    if(newValue > 1000000000 || newValue < -1000000000) {
-        newValue = (newValue / 1000000000).toPrecision(4);
-        valueString = newValue + " Mia.";
+    if (gr == 1) {
+        d3.select("#gesamtEinAus").text(root.name + " " + yearString + " " + (root.value / 1000000000).toPrecision(4) + " Mia.");
     } else {
-        if (newValue > 1000000 || newValue < -1000000) {
-            newValue = (newValue / 1000000).toPrecision(5);
-            valueString = newValue + " Mio.";
-        } else {
-            valueString = "< 1 Mio.";
-        }
+        d3.select("#gesamtEinAus2").text(root.name + " " + yearString2 + " " + (root.value/ 1000000000).toPrecision(4) + " Mia.");
     }
-
-    d3.select("#gesamtEinAus2").text((root.value/ 1000000000).toPrecision(4) + " Mia. " + root.name + " " + yearString2);
     d3.select("#differenzGesamt").text(valueString);
 }
 
@@ -391,7 +365,7 @@ function EinAusagben() {
     else{
         EinAus = 0;
     }
-    updateVisualization(Year,EinAus);
+    updateVisualization(Year,EinAus,1);
 }
 
 function newYear() {
@@ -403,7 +377,7 @@ function newYear() {
         Year = 0;
         yearString = "(2007)";
     }
-    updateVisualization(Year,EinAus);
+    updateVisualization(Year,EinAus,1);
 }
 
 function EinAusagben2() {
@@ -413,7 +387,7 @@ function EinAusagben2() {
     else{
         EinAus2 = 0;
     }
-    updateVisualization2(Year2,EinAus2);
+    updateVisualization(Year2,EinAus2,2);
 }
 
 function newYear2() {
@@ -425,37 +399,67 @@ function newYear2() {
         Year = 0;
         yearString2 = "(2007)";
     }
-    updateVisualization2(Year2,EinAus2);
+    updateVisualization(Year2,EinAus2,2);
 }
 
 
-function updateVisualization(currentYear,EinnahmenAusgaben){
+function updateVisualization(currentYear,EinnahmenAusgaben,gr){
 
     root = rootOriginal.children[currentYear].children[EinnahmenAusgaben];
 
-    var newPath = vis.selectAll("path").data([root]);
-
+    if (gr == 1) {
+        var newPath = vis.selectAll("path").data([root]);
+    } else {
+        var newPath = vis2.selectAll("path").data([root]);
+    }
     newPath.exit().remove();
 
     newPath.attr("class", "update");
 
-
     var nodes = partition.nodes(root);
 
-    vis.data([root]).selectAll("path")
-        .data(nodes)
-        .enter()
-        .append("path")
-        .attr("display", function(d) { return d.depth ? null : "none"; })
-        .attr("d", arc)
-        .attr("fill-rule", "evenodd")
-        .style("fill", function(d) { return colors(d.name); })
-        .style("opacity", 1)
-        .on("mouseover", mouseover)
-        .on("click", click);
+    if(gr == 1) {
+        vis.data([root]).selectAll("path")
+            .data(nodes)
+            .enter()
+            .append("path")
+            .attr("display", function (d) {
+                return d.depth ? null : "none";
+            })
+            .attr("d", arc)
+            .style("fill", function (d) {
+                return colors(d.name);
+            })
+            .style("opacity", 1)
+            .on("mouseover", mouseover)
+            .on("click", click);
 
-    total = root.value;
+        total = root.value;
+    } else {
+        vis2.data([root]).selectAll("path")
+            .data(nodes)
+            .enter()
+            .append("path")
+            .attr("display", function(d) { return d.depth ? null : "none"; })
+            .attr("d", arc)
+            .style("fill", function(d) { return colors(d.name); })
+            .style("opacity", 1)
+            .on("mouseover", mouseover2)
+            .on("click", click2);
 
+        total2 = root.value;
+    }
+    var valueString = getNewValue();
+
+    if (gr == 1) {
+        d3.select("#gesamtEinAus").text(root.name + " " + yearString + " " + (root.value / 1000000000).toPrecision(4) + " Mia.");
+    } else {
+        d3.select("#gesamtEinAus2").text(root.name + " " + yearString2 + " " + (root.value/ 1000000000).toPrecision(4) + " Mia.");
+    }
+    d3.select("#differenzGesamt").text(valueString);
+}
+
+function getNewValue(){
     var valueString;
     var newValue = total-total2;
     if(newValue > 1000000000 || newValue < -1000000000) {
@@ -469,51 +473,5 @@ function updateVisualization(currentYear,EinnahmenAusgaben){
             valueString = "< 1 Mio.";
         }
     }
-
-    d3.select("#gesamtEinAus").text((root.value/ 1000000000).toPrecision(4) + " Mia. " + root.name + " " + yearString);
-    d3.select("#differenzGesamt").text(valueString);
-}
-
-function updateVisualization2(currentYear,EinnahmenAusgaben){
-
-    root = rootOriginal.children[currentYear].children[EinnahmenAusgaben];
-
-    var newPath = vis2.selectAll("path").data([root]);
-
-    newPath.exit().remove();
-
-    newPath.attr("class", "update");
-
-    var nodes = partition.nodes(root);
-
-    vis2.data([root]).selectAll("path")
-        .data(nodes)
-        .enter()
-        .append("path")
-        .attr("display", function(d) { return d.depth ? null : "none"; })
-        .attr("d", arc)
-        .attr("fill-rule", "evenodd")
-        .style("fill", function(d) { return colors(d.name); })
-        .style("opacity", 1)
-        .on("mouseover", mouseover2)
-        .on("click", click2);
-
-    total2 = root.value;
-
-    var valueString;
-    var newValue = total-total2;
-    if(newValue > 1000000000 || newValue < -1000000000) {
-        newValue = (newValue / 1000000000).toPrecision(4);
-        valueString = newValue + " Mia.";
-    } else {
-        if (newValue > 1000000 || newValue < -1000000) {
-            newValue = (newValue / 1000000).toPrecision(5);
-            valueString = newValue + " Mio.";
-        } else {
-            valueString = "< 1 Mio.";
-        }
-    }
-
-    d3.select("#gesamtEinAus2").text((root.value/ 1000000000).toPrecision(4) + " Mia. " + root.name + " " + yearString2);
-    d3.select("#differenzGesamt").text(valueString);
+    return valueString;
 }
