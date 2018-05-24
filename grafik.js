@@ -6,6 +6,8 @@ var radius = Math.min(width, height) / 2;
 var value;
 var value2;
 
+var percentBase = 100;
+
 var rootOriginal = [];
 
 var EinAus = 0;
@@ -57,6 +59,9 @@ var arc = d3.svg.arc()
     .innerRadius(function(d) { return Math.max(0, y(d.y)); })
     .outerRadius(function(d) { return Math.max(0, y(d.y + d.dy)); });
 
+var tooltip = d3.select("body").append("div")
+    .attr("class", "tooltip")
+    .style("opacity", 0);
 
 d3.json("EinAusgabenBund.json", function(error, root) {
     if (error) throw error;
@@ -109,6 +114,9 @@ function createVisualization(currentYear,EinnahmenAusgaben) {
         .style("fill", function(d) { return colors(d.name); })
         .style("opacity", 1)
         .on("mouseover", mouseover)
+        .on("mouseout", function(d) {
+            tooltip.style("opacity", 0);
+        })
         .on("click", click);
 
     var path2 = vis2.data([root]).selectAll("path")
@@ -120,6 +128,9 @@ function createVisualization(currentYear,EinnahmenAusgaben) {
         .style("fill", function(d) { return colors(d.name); })
         .style("opacity", 1)
         .on("mouseover", mouseover2)
+        .on("mouseout", function(d) {
+            tooltip.style("opacity", 0);
+        })
         .on("click", click2);
 
     total = root.value;
@@ -152,6 +163,13 @@ function mouseover(d) {
             valueString = "< 1 Mio.";
         }
     }
+
+    var percentage = Math.round(((100 * d.value / total) * 100) /percentBase);
+    var percentageString = percentage + "%";
+    tooltip.text(d.name + " " + valueString + " ("  + percentageString + ")")
+        .style("opacity", 0.8)
+        .style("left", (d3.event.pageX) + 0 + "px")
+        .style("top", (d3.event.pageY) - 0 + "px");
 
     d3.select("#percentage")
         .text(valueString);
@@ -207,6 +225,14 @@ function mouseover2(d) {
             valueString = "< 1 Mio.";
         }
     }
+
+    var percentage = Math.round(((100 * d.value / total2) * 100) /percentBase);
+    var percentageString = percentage + "%";
+    tooltip.text(d.name + " " + valueString + " ("  + percentageString + ")")
+        .style("opacity", 0.8)
+        .style("left", (d3.event.pageX) + 0 + "px")
+        .style("top", (d3.event.pageY) - 0 + "px");
+
     d3.select("#percentage2")
         .text(valueString);
 
@@ -324,6 +350,9 @@ function updateAfterClick(root, gr){
             })
             .style("opacity", 1)
             .on("mouseover", mouseover)
+            .on("mouseout", function(d) {
+                tooltip.style("opacity", 0);
+            })
             .on("click", click);
 
         total = root.value;
@@ -337,6 +366,9 @@ function updateAfterClick(root, gr){
             .style("fill", function(d) { return colors(d.name); })
             .style("opacity", 1)
             .on("mouseover", mouseover2)
+            .on("mouseout", function(d) {
+                tooltip.style("opacity", 0);
+            })
             .on("click", click2);
 
         total2 = root.value;
@@ -383,6 +415,10 @@ function newYear() {
             Year = 4;
             yearString = "(2011)";
             break;
+        case "5":
+            Year = 5;
+            yearString = "(2012)";
+            break;
     }
     updateVisualization(Year,EinAus,1);
 }
@@ -419,6 +455,10 @@ function newYear2() {
             Year2 = 4;
             yearString2 = "(2011)";
             break;
+        case "5":
+            Year2 = 5;
+            yearString2 = "(2012)";
+            break;
     }
     updateVisualization(Year2,EinAus2,2);
 }
@@ -453,6 +493,9 @@ function updateVisualization(currentYear,EinnahmenAusgaben,gr){
             })
             .style("opacity", 1)
             .on("mouseover", mouseover)
+            .on("mouseout", function(d) {
+                tooltip.style("opacity", 0);
+            })
             .on("click", click);
 
         total = root.value;
@@ -466,6 +509,9 @@ function updateVisualization(currentYear,EinnahmenAusgaben,gr){
             .style("fill", function(d) { return colors(d.name); })
             .style("opacity", 1)
             .on("mouseover", mouseover2)
+            .on("mouseout", function(d) {
+                tooltip.style("opacity", 0);
+            })
             .on("click", click2);
 
         total2 = root.value;
@@ -496,3 +542,4 @@ function getNewValue(){
     }
     return valueString;
 }
+
