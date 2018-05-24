@@ -1,3 +1,37 @@
+body {
+    font: 20px Montserrat, sans-serif;
+    line-height: 1.8;
+    color: #f5f6f7;
+}
+.margin {margin-bottom: 45px;}
+.bg-1 {
+    background-color: #1abc9c; /* Green */
+    color: #ffffff;
+}
+.bg-2 {
+    background-color: #474e5d; /* Dark Blue */
+    color: #ffffff;
+}
+.bg-3 {
+    background-color: #ffffff; /* White */
+    color: #555555;
+}
+.bg-4 {
+    background-color: #2f2f2f; /* Black Gray */
+    color: #fff;
+}
+.container-fluid {
+    padding-top: 70px;
+    padding-bottom: 70px;
+}
+.navbar {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    border: 0;
+    border-radius: 0;
+    margin-bottom: 0;
+    font-size: 12px;
+}
 
 .content {
     padding: 40px 15px;
@@ -21,73 +55,12 @@
     stroke: #fff;
 }
 
-#percentage {
-    font-size: 1.5em;
-}
-
-#gesamtEinAus {
+#differenz, #differenzGesamt, #differenzTitle, #differenzTitleGesamt, #currentTopic2, #currentTopic, select, option, #titleEinAus2, #gesamtEinAus2,
+#percentage2, #explTitle2, #explTitle1, #title2, #title, #titleEinAus, #titleSeite, #gesamtEinAus, #percentage{
     color: #666;
-    font-size: 1.5em;
+    font-size: 15px;
     text-align: center;
 }
-
-#titleSeite {
-    color: #666;
-    font-size: 2.5em;
-    text-align: center;
-}
-
-#titleEinAus {
-    color: #666;
-    font-size: 1.5em;
-    text-align: center;
-}
-
-#title {
-    color: #666;
-    font-size: 1.5em;
-    text-align: center;
-}
-#title2 {
-    color: #666;
-    font-size: 1.5em;
-    text-align: center;
-}
-
-
-#explTitle1 {
-    color: #666;
-    font-size: 1.5em;
-    text-align: center;
-}
-#explTitle2 {
-    color: #666;
-    font-size: 1.5em;
-    text-align: center;
-}
-
-#percentage2 {
-    font-size: 1.5em;
-}
-
-#gesamtEinAus2 {
-    color: #666;
-    font-size: 1.5em;
-    text-align: center;
-}
-
-#titleEinAus2 {
-    color: #666;
-    font-size: 1.5em;
-    text-align: center;
-}
-
-#differenz, #differenzGesamt, #differenzTitle, #differenzTitleGesamt {
-    color: #666;
-    font-size: 1.5em;
-    text-align: center;
-}
-
 
 .panel-body{
     text-align: center;

@@ -1,6 +1,6 @@
 // Dimensions of sunburst.
-var width = 300;
-var height = 300;
+var width = 400;
+var height = 400;
 var radius = Math.min(width, height) / 2;
 
 var value;
@@ -257,15 +257,12 @@ function getAncestors(node) {
 
 
 
-// Update the breadcrumb trail to show the current sequence and percentage.
 function updateBreadcrumbs(nodeArray, percentageString) {
 
-    // Data join; key function combines name and depth (= position in sequence).
     var g = d3.select("#trail")
         .selectAll("g")
         .data(nodeArray, function(d) { return d.name + d.depth; });
 
-    // Add breadcrumb and label for entering nodes.
     var entering = g.enter().append("g");
 
     entering.append("text")
@@ -275,15 +272,12 @@ function updateBreadcrumbs(nodeArray, percentageString) {
         .attr("text-anchor", "middle")
         .text(function(d) { return d.name; });
 
-    // Set position for entering and updating nodes.
     g.attr("transform", function(d, i) {
         return "translate(" + i * (b.w + b.s) + ", 0)";
     });
 
-    // Remove exiting nodes.
     g.exit().remove();
 
-    // Now move and update the percentage at the end.
     d3.select("#trail").select("#endlabel")
         .attr("x", (nodeArray.length + 0.5) * (b.w + b.s))
         .attr("y", b.h / 2)
@@ -291,7 +285,6 @@ function updateBreadcrumbs(nodeArray, percentageString) {
         .attr("text-anchor", "middle")
         .text(percentageString);
 
-    // Make the breadcrumb trail visible, if it's hidden.
     d3.select("#trail")
         .style("visibility", "");
 }
@@ -382,6 +375,10 @@ function newYear() {
             Year = 2;
             yearString = "(2009)";
             break;
+        case "3":
+            Year = 3;
+            yearString = "(2010)";
+            break;
     }
     updateVisualization(Year,EinAus,1);
 }
@@ -409,6 +406,10 @@ function newYear2() {
         case "2":
             Year2 = 2;
             yearString2 = "(2009)";
+            break;
+        case "3":
+            Year2 = 3;
+            yearString2 = "(2010)";
             break;
     }
     updateVisualization(Year2,EinAus2,2);
