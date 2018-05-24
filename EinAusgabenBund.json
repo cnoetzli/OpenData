@@ -1074,6 +1074,221 @@
           ]
         }
       ]
+    }, 
+    {"name": "2012",
+      "children": [
+        {"name": "Einnahmen",
+          "children": [
+            {"name": "Ertrag",
+              "children": [
+                {"name": "Fiskalertrag",
+                  "children": [
+                    {"name": "Direkte Bundessteuer",
+                      "children": [
+                        {"name": "Steuer auf Reingewinn juristischer Personen", "size": 8659304929.390},
+                        {"name": "Steuer auf Einkommen natürlicher Personen", "size": 9682718391.520}
+                      ]
+                    },
+                    {"name": "Verrechnungssteuer",
+                      "children": [
+                        {"name": "Verrechnungssteuer (Schweiz)", "size": 3823987630.820},
+                        {"name": "Steuerrückbehalt USA", "size": 10767223.040}
+                      ]
+                    },
+                    {"name": "Stempelabgaben",
+                      "children": [
+                        {"name": "Emissionsabgabe", "size": 353139586.270},
+                        {"name": "Umsatzabgabe", "size": 1107457126.570},
+                        {"name": "Prämienquittungsstempel und Übrige", "size": 675389932.010}
+                      ]
+                    },
+                    {"name": "Mehrwertsteuer",
+                      "children": [
+                        {"name": "Allgemeine Bundesmittel", "size": 16984724885.160},
+                        {"name": "Zweckgebundene Mittel", "size": 5064860614.450}
+                      ]
+                    },
+                    {"name": "Übrige Verbrauchssteuern",
+                      "children": [
+                        {"name": "Tabaksteuer", "size": 2396800060.200},
+                        {"name": "Biersteuer", "size": 113425838.950},
+                        {"name": "Spirituosensteuer", "size": 0},
+                        {"name": "Mineralölsteuer", "size": 5032543083.900},
+                        {"name": "Netzzuschlag", "size": 0}
+                      ]
+                    },
+                    {"name": "Verkehrsabgaben",
+                      "children": [
+                        {"name": "Automobilsteuer", "size": 412019412.380},
+                        {"name": "Nationalstrassenabgabe", "size": 352058744.070},
+                        {"name": "Schwerverkehrsabgabe", "size": 1529342797.050}
+                      ]
+                    },
+                    {"name": "Zölle", "size": 1043845066.370},
+                    {"name": "Spielbankenabgaben", "size": 329355230.000},
+                    {"name": "Lenkungsabgaben",
+                      "children": [
+                        {"name": "Lenkungsabgabe VOC", "size": 125191725.070},
+                        {"name": "Lenkungsabgaben Heizöl, Benzin und Dieselöl", "size": 0},
+                        {"name": "Altlastenabgabe", "size": 35242361.000},
+                        {"name": "Lenkungsabgabe CO2", "size": 555922647.060}
+                      ]
+                    },
+                    {"name": "Übriger Fiskalertrag", "size": 0}
+                  ]
+                },
+                {"name": "Regalien und Konzessionen",
+                  "children": [
+                    {"name": "Anteil am Reingewinn der Alkoholverwaltung", "size": 266979126.000},
+                    {"name": "Gewinnausschüttung SNB", "size": 333333333.000},
+                    {"name": "Übrige Erträge aus Regalien und Konzessionen", "size": 394250890.450}
+                  ]
+                },
+                {"name": "Entgelte",
+                  "children": [
+                    {"name": "Wehrpflichtersatzabgabe", "size": 160499926.910},
+                    {"name": "Gebühren", "size": 243062022.360},
+                    {"name": "Entgelte für Benutzungen und Dienstleistungen", "size": 77612150.100},
+                    {"name": "Verkäufe", "size": 91939138.150},
+                    {"name": "Rückerstattungen", "size": 131277523.450},
+                    {"name": "EU Zinsbesteuerung", "size": 113966890.310},
+                    {"name": "Übrige Entgelte", "size": 436238836.780}
+                  ]
+                },
+                {"name": "Verschiedener Ertrag",
+                  "children": [
+                    {"name": "Liegenschaftenertrag", "size": 386131748.070},
+                    {"name": "Gewinne auf Sach- und immateriellen Anlagen", "size": 29115366.030},
+                    {"name": "Erträge aus Drittmitteln und Kofinanzierungen", "size": 25592871.280},
+                    {"name": "Aktivierungen", "size": 57407270.710},
+                    {"name": "Übernahme Nationalstrassen", "size": 18914446.030},
+                    {"name": "Übriger verschiedener Ertrag", "size": 80408574.900}
+                  ]
+                },
+                {"name": "Finanzertrag",
+                  "children": [
+                    {"name": "Zinsertrag", "size": 358683783.510},
+                    {"name": "Kursgewinne", "size": 106603013.890},
+                    {"name": "Beteiligungsertrag", "size": 336150.400},
+                    {"name": "Gewinne auf Darlehen und Beteiligungen", "size": 8000.000},
+                    {"name": "Zunahme von Equitywerten", "size": 2285100000.000},
+                    {"name": "Verschiedener Finanzertrag", "size": 91495002.890}
+                  ]
+                },
+                {"name": "Einnahme aus zweckgebundenen Fonds im FK", "size": 64284602.910},
+                {"name": "Ausserordentlicher Ertrag", "size": 737999200.000}
+              ]
+            },
+            {"name": "Investitionseinnahmen",
+              "children": [
+                {"name": "Veräusserung von Sachanlagen", "size": 49579252.840},
+                {"name": "Veräusserung immaterielle Anlagen", "size": 0},
+                {"name": "Rückzahlung Darlehen", "size": 172351307.840},
+                {"name": "Veräusserung Beteiligungen", "size": 190997.750},
+                {"name": "Rückzahlung eigener Investitionsbeiträge", "size": 317497.650},
+                {"name": "Durchlaufende Investitionsbeiträge", "size": 0},
+                {"name": "Ausserordentliche Investitionseinnahmen", "size": 0}
+              ]
+            }
+          ]
+        },
+        {"name": "Ausgaben nach Aufgabengebiet",
+          "children": [
+            {"name": "Institutionelle und finanzielle Voraussetzungen",
+              "children": [
+                {"name": "Unterstützung Legislative und Exekutive", "size": 288758650.880},
+                {"name": "Steuerpolitik", "size": 594562788.470},
+                {"name": "Ressourcen- und Verwaltungssteuerung", "size": 116825372.000},
+                {"name": "Interne Dienstleistungen", "size": 1203188376.670},
+                {"name": "Auswertung und Erhebung von Daten", "size": 274712990.060}
+              ]
+            },
+            {"name": "Ordnung und öffentliche Sicherheit",
+              "children": [
+                {"name": "Allgemeines Rechtswesen", "size": 81692843.280},
+                {"name": "Polizei, Strafverfolgung und -vollzug, Nachrichtendienst", "size": 389743448.620},
+                {"name": "Grenzkontrollen", "size": 326548330.060},
+                {"name": "Gerichte", "size": 162852167.250}
+              ]
+            },
+            {"name": "Beziehungen zum Ausland - Internationale Zusammenarbeit",
+              "children": [
+                {"name": "Politische Beziehungen", "size": 591527067.160},
+                {"name": "Entwicklungshilfe (Süd- und Ostländer)", "size": 2227435412.830},
+                {"name": "Wirtschaftliche Beziehungen", "size": 78486885.440},
+                {"name": "Hilfe an Ostländer und Erweiterung der EU", "size": 81989378.870}
+              ]
+            },
+            {"name": "Landesverteidigung",
+              "children": [
+                {"name": "Militärische Landesverteidigung", "size": 4305596824.300},
+                {"name": "Bevölkerungsschutz und Zivildienst", "size": 145155590.030}
+              ]
+            },
+            {"name": "Bildung und Forschung",
+              "children": [
+                {"name": "Berufsbildung", "size": 843649254.700},
+                {"name": "Hochschulen", "size": 1922866564.940},
+                {"name": "Grundlagenforschung", "size": 2535894389.570},
+                {"name": "Angewandte Forschung", "size": 1333627394.920},
+                {"name": "Übriges Bildungswesen", "size": 28429774.660}
+              ]
+            },
+            {"name": "Kultur und Freizeit",
+              "children": [
+                {"name": "Kulturerhaltung", "size": 116337866.160},
+                {"name": "Kulturförderung", "size": 125473713.110},
+                {"name": "Sport", "size": 143145395.680},
+                {"name": "Medienpolitik", "size": 64748888.140}
+              ]
+            },
+            {"name": "Gesundheit", "size": 211701804.840},
+            {"name": "Soziale Wohlfahrt",
+              "children": [
+                {"name": "Altersversicherung", "size": 10339035944.890},
+                {"name": "Invalidenversicherung", "size": 4821052630.030},
+                {"name": "Krankenversicherung", "size": 2186419046.680},
+                {"name": "Ergänzungsleistungen", "size": 1366443332.580},
+                {"name": "Militärversicherung", "size": 213148175.420},
+                {"name": "Arbeitslosenversicherung / Arbeitsvermittlung", "size": 455955581.070},
+                {"name": "Sozialer Wohnungsbau / Wohnbauförderung", "size": 80116938.480},
+                {"name": "Migration", "size": 1145062385.600},
+                {"name": "Familienpolitik, Gleichstellung", "size": 60876711.320}
+              ]
+            },
+            {"name": "Verkehr",
+              "children": [
+                {"name": "Strassenverkehr", "size": 2840636326.180},
+                {"name": "Schienenverkehr und öffentlicher Verkehr", "size": 5129148914.930},
+                {"name": "Luftfahrt", "size": 160217759.550}
+              ]
+            },
+            {"name": "Umwelt und Raumordnung",
+              "children": [
+                {"name": "Umwelt", "size": 695885120.370},
+                {"name": "Schutz vor Naturgefahren", "size": 289623433.360},
+                {"name": "Naturschutz", "size": 131037760.750},
+                {"name": "Raumordnung", "size": 15578001.880}
+              ]
+            },
+            {"name": "Landwirtschaft und Ernährung", "size": 3711112612.630},
+            {"name": "Wirtschaft",
+              "children": [
+                {"name": "Wirtschaftsordnung", "size": 136954978.510},
+                {"name": "Standortförd., Regionalpolitik, wirtsch. Landesversorgung", "size": 137912349.380},
+                {"name": "Energie", "size": 244230367.180}
+              ]
+            },
+            {"name": "Finanzen und Steuern",
+              "children": [
+                {"name": "Anteile an Bundeseinnahmen", "size": 4374789793.510},
+                {"name": "Geldbeschaffung, Vermögens- und Schuldenverwaltung", "size": 1903868419.030},
+                {"name": "Finanzausgleich", "size": 3101559338.000}
+              ]
+            }
+          ]
+        }
+      ]
     }
   ]
 }
