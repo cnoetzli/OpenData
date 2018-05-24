@@ -361,21 +361,27 @@ function updateAfterClick(root, gr){
 function EinAusagben() {
     if (document.getElementById("einaus").value == "1"){
         EinAus = 1;
-    }
-    else{
+    } else {
         EinAus = 0;
     }
     updateVisualization(Year,EinAus,1);
 }
 
 function newYear() {
-    if (document.getElementById("year").value == "1"){
-        Year = 1;
-        yearString = "(2008)";
-    }
-    else{
-        Year = 0;
-        yearString = "(2007)";
+    var currentYear = document.getElementById("year").value;
+    switch (currentYear){
+        case "0":
+            Year = 0;
+            yearString = "(2007)";
+            break;
+        case "1":
+            Year = 1;
+            yearString = "(2008)";
+            break;
+        case "2":
+            Year = 2;
+            yearString = "(2009)";
+            break;
     }
     updateVisualization(Year,EinAus,1);
 }
@@ -383,21 +389,27 @@ function newYear() {
 function EinAusagben2() {
     if (document.getElementById("einaus2").value == "1"){
         EinAus2  = 1;
-    }
-    else{
+    } else {
         EinAus2 = 0;
     }
     updateVisualization(Year2,EinAus2,2);
 }
 
 function newYear2() {
-    if (document.getElementById("year2").value == "1"){
-        Year2 = 1;
-        yearString2 = "(2008)";
-    }
-    else{
-        Year = 0;
-        yearString2 = "(2007)";
+    var currentYear = document.getElementById("year2").value;
+    switch (currentYear){
+        case "0":
+            Year2 = 0;
+            yearString2 = "(2007)";
+            break;
+        case "1":
+            Year2 = 1;
+            yearString2 = "(2008)";
+            break;
+        case "2":
+            Year2 = 2;
+            yearString2 = "(2009)";
+            break;
     }
     updateVisualization(Year2,EinAus2,2);
 }
