@@ -128,8 +128,8 @@ function createVisualization(currentYear,EinnahmenAusgaben) {
     totalSize = path.node().__data__.value;
     totalSize2 = path2.node().__data__.value;
 
-    d3.select("#gesamtEinAus").text(root.name + " " + yearString + " " + (root.value/ 1000000000).toPrecision(4) + " Mia.");
-    d3.select("#gesamtEinAus2").text(root.name + " " + yearString2 + " " + (root.value/ 1000000000).toPrecision(4) + " Mia.");
+    d3.select("#gesamtEinAus").text(root.name + " " + yearString + ", Total: " + (root.value/ 1000000000).toPrecision(4) + " Mia.");
+    d3.select("#gesamtEinAus2").text(root.name + " " + yearString2 + ", Total: " + (root.value/ 1000000000).toPrecision(4) + " Mia.");
     d3.select("#differenzGesamt").text("0 Mio.");
 };
 
@@ -344,9 +344,9 @@ function updateAfterClick(root, gr){
     var valueString = getNewValue();
 
     if (gr == 1) {
-        d3.select("#gesamtEinAus").text(root.name + " " + yearString + " " + (root.value / 1000000000).toPrecision(4) + " Mia.");
+        d3.select("#gesamtEinAus").text(root.name + " " + yearString + ", Total: " + (root.value / 1000000000).toPrecision(4) + " Mia.");
     } else {
-        d3.select("#gesamtEinAus2").text(root.name + " " + yearString2 + " " + (root.value/ 1000000000).toPrecision(4) + " Mia.");
+        d3.select("#gesamtEinAus2").text(root.name + " " + yearString2 + ", Total: " + (root.value/ 1000000000).toPrecision(4) + " Mia.");
     }
     d3.select("#differenzGesamt").text(valueString);
 }
@@ -379,6 +379,10 @@ function newYear() {
             Year = 3;
             yearString = "(2010)";
             break;
+        case "4":
+            Year = 4;
+            yearString = "(2011)";
+            break;
     }
     updateVisualization(Year,EinAus,1);
 }
@@ -410,6 +414,10 @@ function newYear2() {
         case "3":
             Year2 = 3;
             yearString2 = "(2010)";
+            break;
+        case "4":
+            Year2 = 4;
+            yearString2 = "(2011)";
             break;
     }
     updateVisualization(Year2,EinAus2,2);
@@ -465,9 +473,9 @@ function updateVisualization(currentYear,EinnahmenAusgaben,gr){
     var valueString = getNewValue();
 
     if (gr == 1) {
-        d3.select("#gesamtEinAus").text(root.name + " " + yearString + " " + (root.value / 1000000000).toPrecision(4) + " Mia.");
+        d3.select("#gesamtEinAus").text(root.name + " " + yearString + ", Total: " + (root.value / 1000000000).toPrecision(4) + " Mia.");
     } else {
-        d3.select("#gesamtEinAus2").text(root.name + " " + yearString2 + " " + (root.value/ 1000000000).toPrecision(4) + " Mia.");
+        d3.select("#gesamtEinAus2").text(root.name + " " + yearString2 + ", Total: " + (root.value/ 1000000000).toPrecision(4) + " Mia.");
     }
     d3.select("#differenzGesamt").text(valueString);
 }
