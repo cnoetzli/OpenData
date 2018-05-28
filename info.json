@@ -1,0 +1,11 @@
+{
+"title": "Titel der App (ca. 30 Zeichen)",
+"description": "Beschreibung der App (ca. 500 Zeichen)",
+"authors": [
+    {"name": "Max Muster", "email": "max.muster@gmail.com"},
+    {"name": "Hans Meier", "email": "hans.meier@gmail.com"}
+],
+"date": "YYYY-MM-DD",
+"category": "Eine der folgenden Datenkategorien: development/education/environment/health/finances/research/society/sports/technology/traffic/tutorial",
+"software_license": "zum Beispiel: GNU General Public License v3"
+}
