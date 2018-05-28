@@ -66,6 +66,10 @@
         .append("g")
         .attr("transform", "translate(" + width / 2 + "," + (height / 2) + ")");
 
+    var tooltip = d3.select("svg").append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0);
+
     d3.json("EinAusgabenBund.json", function(error, root) {
         if (error) throw error;
 
@@ -94,6 +98,9 @@
             .attr("d", arc)
             .style("fill", function(d) { return color((d.children ? d : d.parent).data.name); })
             .on("mouseover",mouseover)
+            .on("mouseout", function(d) {
+                tooltip.style("opacity", 0);
+            })
             .on("click", click);
 
         svg.transition()
@@ -116,6 +123,10 @@
         updateBreadcrumbs(sequenceArray, d.value);
 
         //d3.select("#topic").text(function(x) { return x.name; });
+        tooltip.text("Hallo")
+            .style("opacity", 0.8)
+            .style("left", (d3.event.pageX) + 0 + "px")
+            .style("top", (d3.event.pageY) - 0 + "px");
 
         // Fade all the segments.
         d3.selectAll("path")

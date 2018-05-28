@@ -119,6 +119,18 @@ function createVisualization(currentYear,EinnahmenAusgaben) {
         })
         .on("click", click);
 
+    d3.selectAll("input").on("change", function change() {
+        var value = this.value === "count"
+            ? function() { return 1; }
+            : function(d) { return d.size; };
+
+        path
+            .data(partition.value(value).nodes)
+            .transition()
+            .duration(1000)
+            .attrTween("d", arcTweenData);
+    });
+
     var path2 = vis2.data([root]).selectAll("path")
         .data(nodes)
         .enter()
@@ -144,6 +156,27 @@ function createVisualization(currentYear,EinnahmenAusgaben) {
     d3.select("#differenzGesamt").text("0 Mio.");
 };
 
+// When switching data: interpolate the arcs in data space.
+function arcTweenData(a, i) {
+    var oi = d3.interpolate({x: a.x0, dx: a.dx0}, a);
+    function tween(t) {
+        var b = oi(t);
+        a.x0 = b.x;
+        a.dx0 = b.dx;
+        return arc(b);
+    }
+    if (i == 0) {
+        // If we are on the first arc, adjust the x domain to match the root node
+        // at the current zoom level. (We only need to do this once.)
+        var xd = d3.interpolate(x.domain(), [node.x, node.x + node.dx]);
+        return function(t) {
+            x.domain(xd(t));
+            return tween(t);
+        };
+    } else {
+        return tween;
+    }
+}
 
 
 // Fade all but the current sequence, and show it in the breadcrumb trail.
