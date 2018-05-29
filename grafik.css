@@ -71,7 +71,7 @@ div.tooltip {
 }
 
 #differenz, #differenzGesamt, #differenzTitle, #differenzTitleGesamt, #currentTopic2, #currentTopic, select, option, #titleEinAus2, #gesamtEinAus2,
-#percentage2, #explTitle2, #explTitle1, #title2, #title, #titleEinAus, #titleSeite, #gesamtEinAus, #percentage{
+#percentage2, #explTitle2, #explTitle1, #title2, #title, #titleEinAus, #titleSeite, #gesamtEinAus, #percentage, #countsize{
     color: #666;
     font-size: 15px;
     text-align: center;
