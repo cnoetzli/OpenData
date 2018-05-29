@@ -10,21 +10,28 @@
 <body>
 
     <div class="container-fluid bg-1 text-center">
-        <h3 class="margin">Where To Find Me?</h3><br>
+        <h1>VISUALISIERUNG</h1><br>
+        <h3 class="margin">OPEN DATA</h3>
         <div class="row">
             <div class="col-sm-4">
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
             </div>
             <div class="col-sm-4">
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                <p>Dies ist eine Website zur Visualisierung der Einnahmen und Ausgaben des Bundes (2007-2017).</p>
             </div>
             <div class="col-sm-4">
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
             </div>
         </div>
     </div>
 
     <div class="container-fluid bg-2 text-center">
+        <ul>
+            <li><a onclick="darstellung(0)">Einzelnes Jahr</a></li>
+            <li><a onclick="darstellung(1)">Vergleich Einnahmen/Ausagben</a></li>
+            <li><a onclick="darstellung(2)">Vergleich Einnahmen</a></li>
+            <li><a onclick="darstellung(3)">Vergleich Ausagben</a></li>
+        </ul>
+        <h3 class="margin">UNSERE VISUALISIERUNG</h3>
+        <h4 id="titleGraph" class="margin">EINZELNES JAHR</h4>
         <div class="boxes rowA col-xs-6">
             <div class="panel panel-default">
                 <div class="panel-body">
@@ -48,60 +55,86 @@
             </div>
         </div>
 
-        <div class="boxes rowA col-xs-4">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <select id="einaus" onchange="EinAusagben()">
-                        <option value="0">Einnahmen</option>
-                        <option value="1">Ausgaben nach Aufgabengebiet</option>
-                    </select>
-                    <select id="year" onchange="newYear()">
-                        <option value="0">2007</option>
-                        <option value="1">2008</option>
-                        <option value="2">2009</option>
-                        <option value="3">2010</option>
-                        <option value="4">2011</option>
-                        <option value="5">2012</option>
-                    </select>
+        <div id="vergleich" style="display: none;">
+            <div class="boxes rowA col-xs-6">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <select id="einaus" onchange="EinAusagben()">
+                            <option value="0">Einnahmen</option>
+                            <option value="1">Ausgaben nach Aufgabengebiet</option>
+                        </select>
+                        <select id="year" onchange="newYear()">
+                            <option value="0">2007</option>
+                            <option value="1">2008</option>
+                            <option value="2">2009</option>
+                            <option value="3">2010</option>
+                            <option value="4">2011</option>
+                            <option value="5">2012</option>
+                            <option value="6">2013</option>
+                            <option value="7">2014</option>
+                            <option value="8">2015</option>
+                            <option value="9">2016</option>
+                            <option value="10">2017</option>
+                        </select>
+                        <select id="countsize" onchange="change()">
+                            <option value="0">Count</option>
+                            <option value="1">Size</option>
+                        </select>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="boxes rowA col-xs-4">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <form id="countsize">
-                        <label><input type="radio" name="mode" value="size"> Size</label>
-                        <label><input type="radio" name="mode" value="count" checked> Count</label>
-                    </form>
-                </div>
-            </div>
-        </div>
-        <!--<div class="boxes rowA col-xs-4">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <span id="differenzTitleGesamt">Differenz Grafik1 - Grafik2 (gesamt)</span><br/>
-                    <span id="differenzGesamt"></span><br/>
-                    <span id="differenzTitle">Differenz Grafik1 - Grafik2 (hover)</span><br/>
-                    <span id="differenz"></span>
-                </div>
-            </div>
-        </div>-->
-        <div class="boxes rowA col-xs-4">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <select id="einaus2" onchange="EinAusagben2()">
-                        <option value="0">Einnahmen</option>
-                        <option value="1">Ausgaben nach Aufgabengebiet</option>
-                    </select>
+            <div class="boxes rowA col-xs-6">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <select id="einaus2" onchange="EinAusagben2()">
+                            <option value="0">Einnahmen</option>
+                            <option value="1">Ausgaben nach Aufgabengebiet</option>
+                        </select>
 
-                    <select id="year2" onchange="newYear2()">
-                        <option value="0">2007</option>
-                        <option value="1">2008</option>
-                        <option value="2">2009</option>
-                        <option value="3">2010</option>
-                        <option value="4">2011</option>
-                        <option value="5">2012</option>
-                    </select>
+                        <select id="year2" onchange="newYear2()">
+                            <option value="0">2007</option>
+                            <option value="1">2008</option>
+                            <option value="2">2009</option>
+                            <option value="3">2010</option>
+                            <option value="4">2011</option>
+                            <option value="5">2012</option>
+                            <option value="6">2013</option>
+                            <option value="7">2014</option>
+                            <option value="8">2015</option>
+                            <option value="9">2016</option>
+                            <option value="10">2017</option>
+                        </select>
+                        <select id="countsize2" onchange="change2()">
+                            <option value="0">Count</option>
+                            <option value="1">Size</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="einzelnesJahr" style="display: block;">
+            <div class="boxes rowA col-xs-12">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <select id="einaus3" onchange="EinAusagben3()">
+                            <option value="0">Einnahmen</option>
+                            <option value="1">Ausgaben nach Aufgabengebiet</option>
+                        </select>
+
+                        <select id="year3" onchange="newYear3()">
+                            <option value="0">2007</option>
+                            <option value="1">2008</option>
+                            <option value="2">2009</option>
+                            <option value="3">2010</option>
+                            <option value="4">2011</option>
+                            <option value="5">2012</option>
+                            <option value="6">2013</option>
+                            <option value="7">2014</option>
+                            <option value="8">2015</option>
+                            <option value="9">2016</option>
+                            <option value="10">2017</option>
+                        </select>
+                    </div>
                 </div>
             </div>
         </div>
@@ -121,3 +154,6 @@
 
 </body>
 <script src="grafik2.js"></script>
+<script src="inputs.js"></script>
+<script src="menu.js"></script>
+<script src="static.js"></script>
