@@ -1,11 +1,11 @@
 {
-"title": "Titel der App (ca. 30 Zeichen)",
-"description": "Beschreibung der App (ca. 500 Zeichen)",
+"title": "Visualisierung der Ein- und Ausgaben des Bundes",
+"description": "Die Applikation zeigt die relative Grösse der einzelnen Ein- und Ausgaben des Bundes. Ausserdem kann man durch die doppelte Grafik zwei verschiedene Kategorien vergleichen. Die Zoom-funktion erlaubt es schnell die Kategorien zu wechseln und so interaktiv die Daten auszuwerten.",
 "authors": [
-    {"name": "Max Muster", "email": "max.muster@gmail.com"},
-    {"name": "Hans Meier", "email": "hans.meier@gmail.com"}
+    {"name": "Christoph Nötzli", "email": "christoph.noetzli@students.unibe.ch"},
+    {"name": "Lorenzo Wipfli", "email": "lorenzo.wipfli@students.unibe.ch"}
 ],
-"date": "YYYY-MM-DD",
-"category": "Eine der folgenden Datenkategorien: development/education/environment/health/finances/research/society/sports/technology/traffic/tutorial",
-"software_license": "zum Beispiel: GNU General Public License v3"
+"date": "2018-05-29",
+"category": "finances",
+"software_license": "GNU General Public License v3"
 }
