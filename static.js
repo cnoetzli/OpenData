@@ -9,7 +9,28 @@ function arcTweenData(a, i) {
     if (i == 0) {
         // If we are on the first arc, adjust the x domain to match the root node
         // at the current zoom level. (We only need to do this once.)
-        var xd = d3.interpolate(x .domain(), [node.x, node.x + node.dx]);
+        var xd = d3.interpolate(x.domain(), [node.x, node.x + node.dx]);
+        return function(t) {
+            x.domain(xd(t));
+            return tween(t);
+        };
+    } else {
+        return tween;
+    }
+}
+
+function arcTweenData2(a, i) {
+    var oi = d3.interpolate({y: a.x0, dx: a.dx0}, a);
+    function tween(t) {
+        var b = oi(t);
+        a.x0 = b.x;
+        a.dx0 = b.dx;
+        return arc2(b);
+    }
+    if (i == 0) {
+        // If we are on the first arc, adjust the x domain to match the root node
+        // at the current zoom level. (We only need to do this once.)
+        var xd = d3.interpolate(x.domain(), [node.x, node.x + node.dx]);
         return function(t) {
             x.domain(xd(t));
             return tween(t);
@@ -28,6 +49,18 @@ function arcTweenZoom(d) {
         return i
             ? function(t) { return arc(d); }
             : function(t) { x.domain(xd(t)); y.domain(yd(t)).range(yr(t)); return arc(d); };
+    };
+}
+
+// When zooming: interpolate the scales.
+function arcTweenZoom2(d) {
+    var xd = d3.interpolate(x.domain(), [d.x, d.x + d.dx]),
+        yd = d3.interpolate(y.domain(), [d.y, 1]),
+        yr = d3.interpolate(y.range(), [d.y ? 20 : 0, radius]);
+    return function(d, i) {
+        return i
+            ? function(t) { return arc2(d); }
+            : function(t) { x.domain(xd(t)); y.domain(yd(t)).range(yr(t)); return arc2(d); };
     };
 }
 

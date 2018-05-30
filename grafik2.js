@@ -3,6 +3,8 @@ var width = 400,
     radius = Math.min(width, height) / 2;
 
 
+var menu = 0;
+
 var EinAus = 0;
 var Year =0;
 var EinAus2 = 0;
@@ -92,13 +94,16 @@ function newGraphic(currentYear,EinnahmenAusgaben){
     root = rootOriginal.children[currentYear].children[EinnahmenAusgaben];
     root2 = rootOriginal.children[currentYear].children[EinnahmenAusgaben];
 
+    vis.selectAll("path").remove();
+    vis2.selectAll("path").remove();
+
     path = vis.datum(root).selectAll("path")
         .data(partition.nodes)
         .enter().append("path")
         .attr("d", arc)
         .style("fill", function(d) { return color((d.children ? d : d.parent).name); })
         .each(stash)
-        .on("click", click)
+        .on("click", click3)
         .on("mouseover", mouseover)
         .on('mousemove', function(d) {
             tooltip.style('top', (d3.event.layerY + 10) + 'px').style('left', (d3.event.layerX + 10) + 'px');
@@ -113,7 +118,7 @@ function newGraphic(currentYear,EinnahmenAusgaben){
         .attr("d", arc2)
         .style("fill", function(d) { return color((d.children ? d : d.parent).name); })
         .each(stash)
-        .on("click", click2)
+        .on("click", click3)
         .on("mouseover", mouseover2)
         .on('mousemove', function(d) {
             tooltip2.style('top', (d3.event.layerY + 10) + 'px').style('left', (d3.event.layerX + 10) + 'px');
@@ -122,8 +127,14 @@ function newGraphic(currentYear,EinnahmenAusgaben){
             tooltip2.style("opacity", 0);
         });
 
+    if(countsize == 1){
+        document.getElementById("countsize").value = "0";
+        change();
+    }
     document.getElementById("countsize2").value = "1";
     change2();
+
+
 
     total = root.value;
     total2 = root2.value;
@@ -159,7 +170,7 @@ function change(){
 
     total = root.value;
 
-    if(document.getElementById("countsize").value === "0") {
+    if(percentonoff === "0") {
         percentonoff = 1;
         d3.select("#gesamtEinAus").text(root.name + " " + yearString + ", Total: " + (root.value/ 1000000000).toPrecision(4) + " Mia.");
     } else {
@@ -172,10 +183,10 @@ function change2(){
     node = root2;
     path2.transition()
         .duration(1000)
-        .attrTween("d", arcTweenZoom(root));
+        .attrTween("d", arcTweenZoom2(root2));
 
     /* draw heirarchy */
-    var sequenceArray = getAncestors(root);
+    var sequenceArray = getAncestors(root2);
     updateBreadcrumbs(sequenceArray);
 
     var value = document.getElementById("countsize2").value === "0"
@@ -185,11 +196,11 @@ function change2(){
     path2.data(partition.value(value).nodes)
         .transition()
         .duration(1000)
-        .attrTween("d", arcTweenData);
+        .attrTween("d", arcTweenData2);
 
-    total2 = root.value;
+    total2 = root2.value;
 
-    if(document.getElementById("countsize2").value === "0") {
+    if(percentonoff2 === "0") {
         percentonoff2 = 1;
         d3.select("#gesamtEinAus2").text(root.name + " " + yearString2 + ", Total: " + (root.value/ 1000000000).toPrecision(4) + " Mia.");
     } else {
@@ -205,11 +216,7 @@ function click(d) {
         .duration(1000)
         .attrTween("d", arcTweenZoom(d));
 
-    /* draw heirarchy */
-    var sequenceArray = getAncestors(d);
-    updateBreadcrumbs(sequenceArray);
-
-    if(document.getElementById("countsize").value === "1") {
+    if(percentonoff === "1") {
         d3.select("#gesamtEinAus").text(d.name + " " + yearString + ", Total: " + (d.value / 1000000000).toPrecision(4) + " Mia.");
     } else {
         d3.select("#gesamtEinAus").text(d.name+ " " + yearString);
@@ -222,11 +229,21 @@ function click2(d) {
         .duration(1000)
         .attrTween("d", arcTweenZoom(d));
 
-    /* draw heirarchy */
-    var sequenceArray = getAncestors(d);
-    updateBreadcrumbs(sequenceArray);
+    if(percentonoff2 === "0") {
+        d3.select("#gesamtEinAus2").text(d.name + " " + yearString2 + ", Total: " + (d.value/ 1000000000).toPrecision(4) + " Mia.");
+    } else {
+        d3.select("#gesamtEinAus2").text(d.name + " " + yearString2);
+    }
+}
 
-    if(document.getElementById("countsize2").value === "1") {
+function click3(d) {
+    node = d;
+    path2.transition()
+        .duration(1000)
+        .attrTween("d", arcTweenZoom(d));
+
+
+    if(percentonoff2 === "1") {
         d3.select("#gesamtEinAus2").text(d.name + " " + yearString2 + ", Total: " + (d.value/ 1000000000).toPrecision(4) + " Mia.");
     } else {
         d3.select("#gesamtEinAus2").text(d.name + " " + yearString2);
@@ -296,7 +313,7 @@ function mouseover2(d){
     var percentage = Math.round(((100 * d.value / total2) * 100) /percentBase);
     var percentageString = percentage + "%";
     var percent = Math.round(1000 * d.value / total2) / 10;
-    if(percentonoff2 == 1){
+    if(percentonoff2 == 0){
         tooltip2.text(d.name + " " + valueString + " ("  + percentageString + ")")
             .style("opacity", 0.8);
     } else {
@@ -332,7 +349,7 @@ function updateVisualization(currentYear,EinnahmenAusgaben,gr){
             .attr("d", arc)
             .style("fill", function(d) { return color((d.children ? d : d.parent).name); })
             .each(stash)
-            .on("click", click)
+            .on("click", click3)
             .on("mouseover", mouseover)
             .on('mousemove', function(d) {
                 tooltip.style('top', (d3.event.layerY + 10) + 'px').style('left', (d3.event.layerX + 10) + 'px');
@@ -352,7 +369,7 @@ function updateVisualization(currentYear,EinnahmenAusgaben,gr){
             .attr("d", arc)
             .style("fill", function(d) { return color((d.children ? d : d.parent).name); })
             .each(stash)
-            .on("click", click2)
+            .on("click", click3)
             .on("mouseover", mouseover2)
             .on('mousemove', function(d) {
                 tooltip2.style('top', (d3.event.layerY + 10) + 'px').style('left', (d3.event.layerX + 10) + 'px');
