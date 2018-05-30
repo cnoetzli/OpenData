@@ -58,9 +58,6 @@ function newYear() {
             break;
     }
     updateVisualization(Year,EinAus,1);
-    if(menu == 0){
-        newGraphic()
-    }
 }
 
 
@@ -122,9 +119,6 @@ function newYear2() {
             break;
     }
     updateVisualization(Year2,EinAus2,2);
-    if(menu == 0){
-        newGraphic()
-    }
 }
 
 function EinAusagben3() {
@@ -135,9 +129,6 @@ function EinAusagben3() {
     }
     updateVisualization(Year3,EinAus3,1);
     updateVisualization(Year3,EinAus3,2);
-    if(menu == 0){
-        newGraphic(Year3,EinAus3);
-    }
 }
 
 function newYear3() {
@@ -201,7 +192,4 @@ function newYear3() {
     }
     updateVisualization(Year3,EinAus3,1);
     updateVisualization(Year3,EinAus3,2);
-    if(menu == 0){
-        newGraphic(Year3,EinAus3);
-    }
 }

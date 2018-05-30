@@ -80,6 +80,7 @@ var arc2 = d3.svg.arc()
 var node;
 var root;
 var root2;
+var rootOriginal;
 
 d3.json("EinAusgabenBund.json", function(error, root) {
     if (error) throw error;
@@ -91,24 +92,45 @@ d3.json("EinAusgabenBund.json", function(error, root) {
 
 function newGraphic(currentYear,EinnahmenAusgaben){
 
-    root = rootOriginal.children[currentYear].children[EinnahmenAusgaben];
-    root2 = rootOriginal.children[currentYear].children[EinnahmenAusgaben];
+    if(menu == 0) {
+        root = rootOriginal.children[currentYear].children[0];
+        root2 = rootOriginal.children[currentYear].children[1];
+    }
+    if(menu == 1){
+        root = rootOriginal.children[0].children[0];
+        root2 = rootOriginal.children[1].children[0];
+    }
+    if(menu == 2){
+        root = rootOriginal.children[0].children[1];
+        root2 = rootOriginal.children[1].children[1];
+    }
 
     vis.selectAll("path").remove();
     vis2.selectAll("path").remove();
+
+    percentonoff = 0;
+    percentonoff2 = 0;
+    yearString = "(2007)";
+    yearString2 = "(2007)";
+
+    partition = d3.layout.partition()
+        .sort(null)
+        .value(function(d) { return 1; });
 
     path = vis.datum(root).selectAll("path")
         .data(partition.nodes)
         .enter().append("path")
         .attr("d", arc)
-        .style("fill", function(d) { return color((d.children ? d : d.parent).name); })
+        .style("fill", function (d) {
+            return color((d.children ? d : d.parent).name);
+        })
         .each(stash)
-        .on("click", click3)
+        .on("click", click)
         .on("mouseover", mouseover)
-        .on('mousemove', function(d) {
+        .on('mousemove', function (d) {
             tooltip.style('top', (d3.event.layerY + 10) + 'px').style('left', (d3.event.layerX + 10) + 'px');
         })
-        .on("mouseout", function(d) {
+        .on("mouseout", function (d) {
             tooltip.style("opacity", 0);
         });
 
@@ -116,28 +138,29 @@ function newGraphic(currentYear,EinnahmenAusgaben){
         .data(partition.nodes)
         .enter().append("path")
         .attr("d", arc2)
-        .style("fill", function(d) { return color((d.children ? d : d.parent).name); })
+        .style("fill", function (d) {
+            return color((d.children ? d : d.parent).name);
+        })
         .each(stash)
-        .on("click", click3)
+        .on("click", click2)
         .on("mouseover", mouseover2)
-        .on('mousemove', function(d) {
+        .on('mousemove', function (d) {
             tooltip2.style('top', (d3.event.layerY + 10) + 'px').style('left', (d3.event.layerX + 10) + 'px');
         })
-        .on("mouseout", function(d) {
+        .on("mouseout", function (d) {
             tooltip2.style("opacity", 0);
         });
-
-    if(countsize == 1){
-        document.getElementById("countsize").value = "0";
-        change();
-    }
-    document.getElementById("countsize2").value = "1";
-    change2();
-
 
 
     total = root.value;
     total2 = root2.value;
+
+    if(menu == 1 || menu == 2){
+        document.getElementById("countsize").value = 1;
+        change();
+        document.getElementById("countsize2").value = 1;
+        change2();
+    }
 
     d3.select("#gesamtEinAus").text(root.name+ " " + yearString);
     d3.select("#gesamtEinAus2").text(root2.name + " " + yearString2);
@@ -150,7 +173,6 @@ d3.select(self.frameElement).style("height", height + "px");
 
 
 function change(){
-    node = root;
     path.transition()
         .duration(1000)
         .attrTween("d", arcTweenZoom(root));
@@ -159,7 +181,7 @@ function change(){
     var sequenceArray = getAncestors(root);
     updateBreadcrumbs(sequenceArray);
 
-    var value = document.getElementById("countsize").value === "0"
+    var value = document.getElementById("countsize3").value === "0"
         ? function() { return 1; }
         : function(d) { return d.size; };
 
@@ -170,12 +192,39 @@ function change(){
 
     total = root.value;
 
-    if(percentonoff === "0") {
+    if(percentonoff == 0) {
         percentonoff = 1;
         d3.select("#gesamtEinAus").text(root.name + " " + yearString + ", Total: " + (root.value/ 1000000000).toPrecision(4) + " Mia.");
     } else {
         percentonoff = 0;
         d3.select("#gesamtEinAus").text(root.name+ " " + yearString);
+    }
+
+    path2.transition()
+        .duration(1000)
+        .attrTween("d", arcTweenZoom2(root2));
+
+    /* draw heirarchy */
+    var sequenceArray = getAncestors(root2);
+    updateBreadcrumbs(sequenceArray);
+
+    var value = document.getElementById("countsize3").value === "0"
+        ? function() { return 1; }
+        : function(d) { return d.size; };
+
+    path2.data(partition.value(value).nodes)
+        .transition()
+        .duration(1000)
+        .attrTween("d", arcTweenData2);
+
+    total2 = root2.value;
+
+    if(percentonoff2 == 0) {
+        percentonoff2 = 1;
+        d3.select("#gesamtEinAus2").text(root2.name + " " + yearString2 + ", Total: " + (root2.value/ 1000000000).toPrecision(4) + " Mia.");
+    } else {
+        percentonoff2 = 0;
+        d3.select("#gesamtEinAus2").text(root2.name+ " " + yearString2);
     }
 }
 
@@ -200,7 +249,7 @@ function change2(){
 
     total2 = root2.value;
 
-    if(percentonoff2 === "0") {
+    if(percentonoff2 == 0) {
         percentonoff2 = 1;
         d3.select("#gesamtEinAus2").text(root.name + " " + yearString2 + ", Total: " + (root.value/ 1000000000).toPrecision(4) + " Mia.");
     } else {
@@ -216,7 +265,7 @@ function click(d) {
         .duration(1000)
         .attrTween("d", arcTweenZoom(d));
 
-    if(percentonoff === "1") {
+    if(percentonoff == 1) {
         d3.select("#gesamtEinAus").text(d.name + " " + yearString + ", Total: " + (d.value / 1000000000).toPrecision(4) + " Mia.");
     } else {
         d3.select("#gesamtEinAus").text(d.name+ " " + yearString);
@@ -229,7 +278,7 @@ function click2(d) {
         .duration(1000)
         .attrTween("d", arcTweenZoom(d));
 
-    if(percentonoff2 === "0") {
+    if(percentonoff2 == 1) {
         d3.select("#gesamtEinAus2").text(d.name + " " + yearString2 + ", Total: " + (d.value/ 1000000000).toPrecision(4) + " Mia.");
     } else {
         d3.select("#gesamtEinAus2").text(d.name + " " + yearString2);
@@ -243,7 +292,7 @@ function click3(d) {
         .attrTween("d", arcTweenZoom(d));
 
 
-    if(percentonoff2 === "1") {
+    if(percentonoff2 == 1) {
         d3.select("#gesamtEinAus2").text(d.name + " " + yearString2 + ", Total: " + (d.value/ 1000000000).toPrecision(4) + " Mia.");
     } else {
         d3.select("#gesamtEinAus2").text(d.name + " " + yearString2);
@@ -313,7 +362,7 @@ function mouseover2(d){
     var percentage = Math.round(((100 * d.value / total2) * 100) /percentBase);
     var percentageString = percentage + "%";
     var percent = Math.round(1000 * d.value / total2) / 10;
-    if(percentonoff2 == 0){
+    if(percentonoff2 == 1){
         tooltip2.text(d.name + " " + valueString + " ("  + percentageString + ")")
             .style("opacity", 0.8);
     } else {
@@ -340,8 +389,9 @@ function mouseover2(d){
 function updateVisualization(currentYear,EinnahmenAusgaben,gr){
 
     if(gr == 1) {
-        root = rootOriginal.children[currentYear].children[EinnahmenAusgaben];
         vis.selectAll("path").remove();
+
+        root = rootOriginal.children[currentYear].children[0];
 
         path = vis.datum(root).selectAll("path")
             .data(partition.nodes)
@@ -349,7 +399,7 @@ function updateVisualization(currentYear,EinnahmenAusgaben,gr){
             .attr("d", arc)
             .style("fill", function(d) { return color((d.children ? d : d.parent).name); })
             .each(stash)
-            .on("click", click3)
+            .on("click", click)
             .on("mouseover", mouseover)
             .on('mousemove', function(d) {
                 tooltip.style('top', (d3.event.layerY + 10) + 'px').style('left', (d3.event.layerX + 10) + 'px');
@@ -360,8 +410,9 @@ function updateVisualization(currentYear,EinnahmenAusgaben,gr){
 
         total = root.value;
     } else {
-        root2 = rootOriginal.children[currentYear].children[EinnahmenAusgaben];
         vis2.selectAll("path").remove();
+
+        root2 = rootOriginal.children[currentYear].children[1];
 
         path2 = vis2.datum(root2).selectAll("path")
             .data(partition.nodes)
@@ -369,7 +420,7 @@ function updateVisualization(currentYear,EinnahmenAusgaben,gr){
             .attr("d", arc)
             .style("fill", function(d) { return color((d.children ? d : d.parent).name); })
             .each(stash)
-            .on("click", click3)
+            .on("click", click2)
             .on("mouseover", mouseover2)
             .on('mousemove', function(d) {
                 tooltip2.style('top', (d3.event.layerY + 10) + 'px').style('left', (d3.event.layerX + 10) + 'px');
@@ -383,20 +434,53 @@ function updateVisualization(currentYear,EinnahmenAusgaben,gr){
     var valueString = getNewValue();
 
     if (gr == 1) {
-        if(document.getElementById("countsize").value === "1") {
+        if(percentonoff == 1) {
             d3.select("#gesamtEinAus").text(root.name + " " + yearString + ", Total: " + (root.value/ 1000000000).toPrecision(4) + " Mia.");
         } else {
             d3.select("#gesamtEinAus").text(root.name+ " " + yearString);
         }
     } else {
-        if(document.getElementById("countsize2").value === "1") {
-            d3.select("#gesamtEinAus2").text(root2.name + " " + yearString + ", Total: " + (root2.value/ 1000000000).toPrecision(4) + " Mia.");
+        if(percentonoff2 == 1) {
+            d3.select("#gesamtEinAus2").text(root2.name + " " + yearString2 + ", Total: " + (root2.value/ 1000000000).toPrecision(4) + " Mia.");
         } else {
-            d3.select("#gesamtEinAus2").text(root2.name+ " " + yearString);
+            d3.select("#gesamtEinAus2").text(root2.name+ " " + yearString2);
         }
     }
     d3.select("#differenzGesamt").text(valueString);
 }
 
+function darstellung(m){
+    switch (m){
+        case 0: document.getElementById("vergleich").style.display = "none";
+                document.getElementById("einzelnesJahr").style.display = "block";
+                document.getElementById("einaus3").style.display = "none";
+                EinAus3 = 0;
+                Year3 =0;
+                menu = 0;
+                newGraphic(Year3,EinAus3);
+                break;
+        case 1: document.getElementById("vergleich").style.display = "block";
+                document.getElementById("einzelnesJahr").style.display = "none";
+                document.getElementById("einaus").style.display = "none";
+                document.getElementById("einaus2").style.display = "none";
+                EinAus3 = 0;
+                Year3 =0;
+                menu = 1;
+                newGraphic(Year3,EinAus3);
+                break;
+        case 2: document.getElementById("vergleich").style.display = "block";
+                document.getElementById("einzelnesJahr").style.display = "none";
+                document.getElementById("einaus").style.display = "none";
+                document.getElementById("einaus2").style.display = "none";
+                EinAus3 = 0;
+                Year3 =0;
+                menu = 2;
+                newGraphic(Year3,EinAus3);
+                break;
+    }
+
+}
+
+darstellung(menu);
 
 

@@ -25,13 +25,12 @@
 
     <div class="container-fluid bg-2 text-center">
         <ul>
-            <li><a onclick="darstellung(0)">Einzelnes Jahr</a></li>
-            <li><a onclick="darstellung(1)">Vergleich Einnahmen/Ausagben</a></li>
-            <li><a onclick="darstellung(2)">Vergleich Einnahmen</a></li>
-            <li><a onclick="darstellung(3)">Vergleich Ausagben</a></li>
+            <li><button onclick="darstellung(0)">Vergleich Einnahmen/Ausagben</button></li>
+            <li><button onclick="darstellung(1)">Vergleich Einnahmen</button></li>
+            <li><button onclick="darstellung(2)">Vergleich Ausagben</button></li>
         </ul>
         <h3 class="margin">UNSERE VISUALISIERUNG</h3>
-        <h4 id="titleGraph" class="margin">EINZELNES JAHR</h4>
+        <h4 id="titleGraph" class="margin">VERGLEICH EINNAHMEN/AUSGABEN</h4>
         <div class="boxes rowA col-xs-6">
             <div class="panel panel-default">
                 <div class="panel-body">
@@ -55,7 +54,7 @@
             </div>
         </div>
 
-        <div id="vergleich" style="display: none;">
+        <div id="vergleich">
             <div class="boxes rowA col-xs-6">
                 <div class="panel panel-default">
                     <div class="panel-body">
@@ -77,8 +76,8 @@
                             <option value="10">2017</option>
                         </select>
                         <select id="countsize" onchange="change()">
-                            <option value="0">Count</option>
-                            <option value="1">Size</option>
+                            <option value="0">Kategorien</option>
+                            <option value="1">Prozent</option>
                         </select>
                     </div>
                 </div>
@@ -104,15 +103,15 @@
                             <option value="9">2016</option>
                             <option value="10">2017</option>
                         </select>
-                        <select id="countsize2" onchange="change2()">
-                            <option value="0">Count</option>
-                            <option value="1">Size</option>
+                        <select id="countsize2" onchange="change()">
+                            <option value="0">Kategorien</option>
+                            <option value="1">Prozent</option>
                         </select>
                     </div>
                 </div>
             </div>
         </div>
-        <div id="einzelnesJahr" style="display: block;">
+        <div id="einzelnesJahr">
             <div class="boxes rowA col-xs-12">
                 <div class="panel panel-default">
                     <div class="panel-body">
@@ -133,6 +132,10 @@
                             <option value="8">2015</option>
                             <option value="9">2016</option>
                             <option value="10">2017</option>
+                        </select>
+                        <select id="countsize3" onchange="change()">
+                            <option value="0">Kategorien</option>
+                            <option value="1">Prozent</option>
                         </select>
                     </div>
                 </div>
@@ -155,5 +158,4 @@
 </body>
 <script src="grafik2.js"></script>
 <script src="inputs.js"></script>
-<script src="menu.js"></script>
 <script src="static.js"></script>
