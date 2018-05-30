@@ -22,7 +22,8 @@ ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
-    overflow: hidden;
+    display: inline-block;
+    text-align: center;
     background-color: #474e5d;
 }
 
@@ -32,6 +33,8 @@ li {
 
 li  button {
     display: block;
+    background-color: #474e5d;
+    border: none;
     color: white;
     text-align: center;
     padding: 14px 16px;
@@ -79,6 +82,11 @@ li button:hover {
     padding: 40px 15px;
 }
 
+#centerMenu{
+    text-align: center;
+}
+
+
 #sequence {
     width: 600px;
     height: 70px;
@@ -103,6 +111,12 @@ li button:hover {
     font-size: 15px;
     text-align: center;
 }
+#absolut, #absolut2, #relativ, #relativ2{
+    color: #666;
+    font-size: 12px;
+    text-align: center;
+}
+
 
 .panel-body{
     text-align: center;

@@ -1,6 +1,4 @@
-
-
-function EinAusagben() {
+function EinAusgaben() {
     if (document.getElementById("einaus").value == "1"){
         EinAus = 1;
     } else {
@@ -61,7 +59,7 @@ function newYear() {
 }
 
 
-function EinAusagben2() {
+function EinAusgaben2() {
     if (document.getElementById("einaus2").value == "1"){
         EinAus2  = 1;
     } else {
@@ -121,7 +119,7 @@ function newYear2() {
     updateVisualization(Year2,EinAus2,2);
 }
 
-function EinAusagben3() {
+function EinAusgaben3() {
     if (document.getElementById("einaus3").value == "1"){
         EinAus3  = 1;
     } else {

@@ -11,6 +11,8 @@ var EinAus2 = 0;
 var Year2 =0;
 var EinAus3 = 0;
 var Year3 =0;
+var absolut;
+var absolut2;
 
 var yearString = "(2007)";
 var yearString2 = "(2007)";
@@ -82,6 +84,18 @@ var root;
 var root2;
 var rootOriginal;
 
+document.getElementById("button0").style.border = "2px solid black";
+document.getElementById("button1").style.border = "none";
+document.getElementById("button2").style.border = "none";
+document.getElementById("button3").style.border = "none";
+document.getElementById("vergleich").style.display = "none";
+document.getElementById("einzelnesJahr").style.display = "block";
+document.getElementById("einaus3").style.display = "none";
+document.getElementById("absolut").style.display = "none";
+document.getElementById("absolut2").style.display = "none";
+document.getElementById("relativ").style.display = "none";
+document.getElementById("relativ2").style.display = "none";
+
 d3.json("EinAusgabenBund.json", function(error, root) {
     if (error) throw error;
 
@@ -93,20 +107,37 @@ d3.json("EinAusgabenBund.json", function(error, root) {
 function newGraphic(currentYear,EinnahmenAusgaben){
 
     if(menu == 0) {
-        root = rootOriginal.children[currentYear].children[0];
-        root2 = rootOriginal.children[currentYear].children[1];
+        root = rootOriginal.children[0].children[0];
+        root2 = rootOriginal.children[0].children[1];
     }
     if(menu == 1){
         root = rootOriginal.children[0].children[0];
-        root2 = rootOriginal.children[1].children[0];
+        root2 = rootOriginal.children[0].children[0];
     }
     if(menu == 2){
         root = rootOriginal.children[0].children[1];
-        root2 = rootOriginal.children[1].children[1];
+        root2 = rootOriginal.children[0].children[1];
+    }
+    if(menu == 3){
+        root = rootOriginal.children[0].children[0];
+        root2 = rootOriginal.children[0].children[0];
     }
 
     vis.selectAll("path").remove();
     vis2.selectAll("path").remove();
+
+    document.getElementById("year").value = "0";
+    document.getElementById("year2").value = "0";
+    document.getElementById("year3").value = "0";
+    document.getElementById("countsize3").value = "0";
+
+    if(menu == 2){
+        document.getElementById("einaus").value = "1";
+        document.getElementById("einaus2").value = "1";
+    } else {
+        document.getElementById("einaus").value = "0";
+        document.getElementById("einaus2").value = "0";
+    }
 
     percentonoff = 0;
     percentonoff2 = 0;
@@ -155,16 +186,28 @@ function newGraphic(currentYear,EinnahmenAusgaben){
     total = root.value;
     total2 = root2.value;
 
-    if(menu == 1 || menu == 2){
+    if(menu == 0){
+        document.getElementById("countsize").value = 0;
+        document.getElementById("countsize2").value = 0;
+        change2();
+        change3();
+        percentonoff = 0;
+        percentonoff2 = 0;
+    } else {
         document.getElementById("countsize").value = 1;
-        change();
         document.getElementById("countsize2").value = 1;
         change2();
+        change3();
     }
 
-    d3.select("#gesamtEinAus").text(root.name+ " " + yearString);
-    d3.select("#gesamtEinAus2").text(root2.name + " " + yearString2);
-    d3.select("#differenzGesamt").text("0 Mio.");
+    if(menu == 0){
+        d3.select("#gesamtEinAus").text(root.name+ " " + yearString);
+        d3.select("#gesamtEinAus2").text(root2.name + " " + yearString2);
+    } else {
+        d3.select("#gesamtEinAus").text(root.name + " " + yearString + ", Total: " + (root.value/ 1000000000).toPrecision(4) + " Mia.");
+        d3.select("#gesamtEinAus2").text(root2.name + " " + yearString2 + ", Total: " + (root2.value/ 1000000000).toPrecision(4) + " Mia.");
+    }
+
 
 }
 
@@ -258,15 +301,50 @@ function change2(){
     }
 }
 
+function change3(){
+    path.transition()
+        .duration(1000)
+        .attrTween("d", arcTweenZoom(root));
+
+    /* draw heirarchy */
+    var sequenceArray = getAncestors(root);
+    updateBreadcrumbs(sequenceArray);
+
+    var value = document.getElementById("countsize").value === "0"
+        ? function() { return 1; }
+        : function(d) { return d.size; };
+
+    path.data(partition.value(value).nodes)
+        .transition()
+        .duration(1000)
+        .attrTween("d", arcTweenData);
+
+    total = root.value;
+
+    if(percentonoff == 0) {
+        percentonoff = 1;
+        d3.select("#gesamtEinAus").text(root.name + " " + yearString + ", Total: " + (root.value/ 1000000000).toPrecision(4) + " Mia.");
+    } else {
+        percentonoff = 0;
+        d3.select("#gesamtEinAus").text(root.name+ " " + yearString);
+    }
+}
+
 
 function click(d) {
     node = d;
+    absolut = d;
     path.transition()
         .duration(1000)
         .attrTween("d", arcTweenZoom(d));
 
     if(percentonoff == 1) {
         d3.select("#gesamtEinAus").text(d.name + " " + yearString + ", Total: " + (d.value / 1000000000).toPrecision(4) + " Mia.");
+
+        d3.select("#absolut").text("Absolute Differenz: " + absolut.name + " " + yearString + " " + "-"  + " " + absolut2.name
+            + " " + yearString2 + " = " + ((absolut.value-absolut2.value)/ 1000000000).toPrecision(4) + " Mia.");
+        d3.select("#absolut2").text("Absolute Differenz: " + absolut2.name + " " + yearString + " " + "-"  + " " + absolut.name
+            + " " + yearString2 + " = " + ((absolut2.value-absolut.value)/ 1000000000).toPrecision(4) + " Mia.");
     } else {
         d3.select("#gesamtEinAus").text(d.name+ " " + yearString);
     }
@@ -274,26 +352,18 @@ function click(d) {
 
 function click2(d) {
     node = d;
+    absolut2 = d;
     path2.transition()
         .duration(1000)
         .attrTween("d", arcTweenZoom(d));
 
     if(percentonoff2 == 1) {
-        d3.select("#gesamtEinAus2").text(d.name + " " + yearString2 + ", Total: " + (d.value/ 1000000000).toPrecision(4) + " Mia.");
-    } else {
-        d3.select("#gesamtEinAus2").text(d.name + " " + yearString2);
-    }
-}
+        d3.select("#gesamtEinAus2").text(absolut2.name + " " + yearString2 + ", Total: " + (absolut2.value/ 1000000000).toPrecision(4) + " Mia.");
 
-function click3(d) {
-    node = d;
-    path2.transition()
-        .duration(1000)
-        .attrTween("d", arcTweenZoom(d));
-
-
-    if(percentonoff2 == 1) {
-        d3.select("#gesamtEinAus2").text(d.name + " " + yearString2 + ", Total: " + (d.value/ 1000000000).toPrecision(4) + " Mia.");
+        d3.select("#absolut").text("Absolute Differenz: " + absolut.name + " " + yearString + " " + "-"  + " " + absolut2.name
+            + " " + yearString2 + " = " + ((absolut.value-absolut2.value)/ 1000000000).toPrecision(4) + " Mia.");
+        d3.select("#absolut2").text("Absolute Differenz: " + absolut2.name + " " + yearString2 + " " + "-"  + " " + absolut.name
+            + " " + yearString + " = " + ((absolut2.value-absolut.value)/ 1000000000).toPrecision(4) + " Mia.");
     } else {
         d3.select("#gesamtEinAus2").text(d.name + " " + yearString2);
     }
@@ -320,11 +390,14 @@ function mouseover(d){
     var percentageString = percentage + "%";
     var percent = Math.round(1000 * d.value / total) / 10;
     if(percentonoff == 1){
-        tooltip.text(d.name + " " + valueString + " ("  + percentageString + ")")
-            .style("opacity", 0.8);
+        if(menu == 0){
+            tooltip.text(d.name + " " + valueString + " ("  + percentageString + ")").style("opacity", 0.8);
+        } else {
+            tooltip.text(d.name + " " + valueString + " ("  + percentageString + ")")
+                .style("opacity", 0.8);
+        }
     } else {
-        tooltip.text(d.name)
-            .style("opacity", 0.8);
+        tooltip.text(d.name).style("opacity", 0.8);
     }
 
     var sequenceArray = getAncestors(d);
@@ -388,10 +461,25 @@ function mouseover2(d){
 
 function updateVisualization(currentYear,EinnahmenAusgaben,gr){
 
+    if(menu == 0) {
+        root = rootOriginal.children[currentYear].children[0];
+        root2 = rootOriginal.children[currentYear].children[1];
+    }
+    if(menu == 1){
+        root = rootOriginal.children[currentYear].children[0];
+        root2 = rootOriginal.children[currentYear].children[0];
+    }
+    if(menu == 2){
+        root = rootOriginal.children[currentYear].children[1];
+        root2 = rootOriginal.children[currentYear].children[1];
+    }
+    if(menu == 3){
+        root = rootOriginal.children[currentYear].children[EinnahmenAusgaben];
+        root2 = rootOriginal.children[currentYear].children[EinnahmenAusgaben];
+    }
+
     if(gr == 1) {
         vis.selectAll("path").remove();
-
-        root = rootOriginal.children[currentYear].children[0];
 
         path = vis.datum(root).selectAll("path")
             .data(partition.nodes)
@@ -409,10 +497,9 @@ function updateVisualization(currentYear,EinnahmenAusgaben,gr){
             });
 
         total = root.value;
+        absolut = root;
     } else {
         vis2.selectAll("path").remove();
-
-        root2 = rootOriginal.children[currentYear].children[1];
 
         path2 = vis2.datum(root2).selectAll("path")
             .data(partition.nodes)
@@ -430,18 +517,29 @@ function updateVisualization(currentYear,EinnahmenAusgaben,gr){
             });
 
         total2 = root.value;
+        absolut2 = root2;
     }
     var valueString = getNewValue();
 
     if (gr == 1) {
         if(percentonoff == 1) {
             d3.select("#gesamtEinAus").text(root.name + " " + yearString + ", Total: " + (root.value/ 1000000000).toPrecision(4) + " Mia.");
+
+            d3.select("#absolut").text("Absolute Differenz: " + absolut.name + " " + yearString + " " + "-"  + " " + absolut2.name
+                + " " + yearString2 + " = " + ((absolut.value-absolut2.value)/ 1000000000).toPrecision(4) + " Mia.");
+            d3.select("#absolut2").text("Absolute Differenz: " + absolut2.name + " " + yearString + " " + "-"  + " " + absolut.name
+                + " " + yearString2 + " = " + ((absolut2.value-absolut.value)/ 1000000000).toPrecision(4) + " Mia.");
         } else {
             d3.select("#gesamtEinAus").text(root.name+ " " + yearString);
         }
     } else {
         if(percentonoff2 == 1) {
             d3.select("#gesamtEinAus2").text(root2.name + " " + yearString2 + ", Total: " + (root2.value/ 1000000000).toPrecision(4) + " Mia.");
+
+            d3.select("#absolut").text("Absolute Differenz: " + absolut.name + " " + yearString + " " + "-"  + " " + absolut2.name
+                + " " + yearString2 + " = " + ((absolut.value-absolut2.value)/ 1000000000).toPrecision(4) + " Mia.");
+            d3.select("#absolut2").text("Absolute Differenz: " + absolut2.name + " " + yearString + " " + "-"  + " " + absolut.name
+                + " " + yearString2 + " = " + ((absolut2.value-absolut.value)/ 1000000000).toPrecision(4) + " Mia.");
         } else {
             d3.select("#gesamtEinAus2").text(root2.name+ " " + yearString2);
         }
@@ -451,36 +549,116 @@ function updateVisualization(currentYear,EinnahmenAusgaben,gr){
 
 function darstellung(m){
     switch (m){
-        case 0: document.getElementById("vergleich").style.display = "none";
-                document.getElementById("einzelnesJahr").style.display = "block";
-                document.getElementById("einaus3").style.display = "none";
-                EinAus3 = 0;
-                Year3 =0;
-                menu = 0;
-                newGraphic(Year3,EinAus3);
-                break;
-        case 1: document.getElementById("vergleich").style.display = "block";
-                document.getElementById("einzelnesJahr").style.display = "none";
-                document.getElementById("einaus").style.display = "none";
-                document.getElementById("einaus2").style.display = "none";
-                EinAus3 = 0;
-                Year3 =0;
-                menu = 1;
-                newGraphic(Year3,EinAus3);
-                break;
-        case 2: document.getElementById("vergleich").style.display = "block";
-                document.getElementById("einzelnesJahr").style.display = "none";
-                document.getElementById("einaus").style.display = "none";
-                document.getElementById("einaus2").style.display = "none";
-                EinAus3 = 0;
-                Year3 =0;
-                menu = 2;
-                newGraphic(Year3,EinAus3);
-                break;
+        case 0:
+            d3.select("#titleGraph").text("VERGLEICH EINNAHMEN/AUSGABEN");
+            document.getElementById("button0").style.border = "2px solid black";
+            document.getElementById("button1").style.border = "none";
+            document.getElementById("button2").style.border = "none";
+            document.getElementById("button3").style.border = "none";
+            document.getElementById("absolut").style.display = "none";
+            document.getElementById("absolut2").style.display = "none";
+            document.getElementById("relativ").style.display = "none";
+            document.getElementById("relativ2").style.display = "none";
+            document.getElementById("vergleich").style.display = "none";
+            document.getElementById("einzelnesJahr").style.display = "block";
+            document.getElementById("einaus3").style.display = "none";
+            EinAus3 = 0;
+            Year3 =0;
+            menu = 0;
+            newGraphic(Year3,EinAus3);
+            break;
+        case 1:
+            d3.select("#titleGraph").text("VERGLEICH EINNAHMEN");
+            document.getElementById("button0").style.border = "none";
+            document.getElementById("button1").style.border = "2px solid black";
+            document.getElementById("button2").style.border = "none";
+            document.getElementById("button3").style.border = "none";
+            document.getElementById("absolut").style.display = "block";
+            document.getElementById("absolut2").style.display = "block";
+            document.getElementById("relativ").style.display = "block";
+            document.getElementById("relativ2").style.display = "block";
+            document.getElementById("vergleich").style.display = "block";
+            document.getElementById("einzelnesJahr").style.display = "none";
+            document.getElementById("einaus").disabled = true;
+            document.getElementById("einaus2").disabled = true;
+            document.getElementById("einaus").style.color = "red";
+            document.getElementById("einaus2").style.color = "red";
+            document.getElementById("countsize").style.display = "none";
+            document.getElementById("countsize2").style.display = "none";
+            EinAus3 = 0;
+            Year3 =0;
+            menu = 1;
+            newGraphic(Year3,EinAus3);
+            absolut = root;
+            absolut2 = root2;
+            d3.select("#absolut").text("Absolute Differenz: " + root.name + " " + yearString + " " + "-"  + " " + root2.name
+                + " " + yearString2 + " = " + ((root.value-root2.value)/ 1000000000).toPrecision(4) + " Mia.");
+            d3.select("#absolut2").text("Absolute Differenz: " + root2.name + " " + yearString + " " + "-"  + " " + root.name
+                + " " + yearString2 + " = " + ((root2.value-root.value)/ 1000000000).toPrecision(4) + " Mia.");
+            break;
+        case 2:
+            d3.select("#titleGraph").text("VERGLEICH AUSGABEN");
+            document.getElementById("button0").style.border = "none";
+            document.getElementById("button1").style.border = "none";
+            document.getElementById("button2").style.border = "2px solid black";
+            document.getElementById("button3").style.border = "none";
+            document.getElementById("absolut").style.display = "block";
+            document.getElementById("absolut2").style.display = "block";
+            document.getElementById("relativ").style.display = "block";
+            document.getElementById("relativ2").style.display = "block";
+            document.getElementById("vergleich").style.display = "block";
+            document.getElementById("einzelnesJahr").style.display = "none";
+            document.getElementById("einaus").disabled = true;
+            document.getElementById("einaus2").disabled = true;
+            document.getElementById("einaus").style.color = "red";
+            document.getElementById("einaus2").style.color = "red";
+            document.getElementById("countsize").style.display = "none";
+            document.getElementById("countsize2").style.display = "none";
+            EinAus3 = 0;
+            Year3 =0;
+            menu = 2;
+            newGraphic(Year3,EinAus3);
+            absolut = root;
+            absolut2 = root2;
+            d3.select("#absolut").text("Absolute Differenz: " + root.name + " " + yearString + " " + "-"  + " " + root2.name
+                + " " + yearString2 + " = " + ((root.value-root2.value)/ 1000000000).toPrecision(4) + " Mia.");
+            d3.select("#absolut2").text("Absolute Differenz: " + root2.name + " " + yearString2 + " " + "-"  + " " + root.name
+                + " " + yearString + " = " + ((root2.value-root.value)/ 1000000000).toPrecision(4) + " Mia.");
+            break;
+        case 3:
+            d3.select("#titleGraph").text("VERGLEICH");
+            document.getElementById("button0").style.border = "none";
+            document.getElementById("button1").style.border = "none";
+            document.getElementById("button2").style.border = "none";
+            document.getElementById("button3").style.border = "2px solid black";
+            document.getElementById("absolut").style.display = "block";
+            document.getElementById("absolut2").style.display = "block";
+            document.getElementById("relativ").style.display = "block";
+            document.getElementById("relativ2").style.display = "block";
+            document.getElementById("einaus").disabled = false;
+            document.getElementById("einaus2").disabled = false;
+            document.getElementById("einaus").style.color = "#666";
+            document.getElementById("einaus2").style.color = "#666";
+            document.getElementById("vergleich").style.display = "block";
+            document.getElementById("einzelnesJahr").style.display = "none";
+            document.getElementById("countsize").style.display = "none";
+            document.getElementById("countsize2").style.display = "none";
+            EinAus3 = 0;
+            Year3 =0;
+            menu = 3;
+            newGraphic(Year3,EinAus3);
+            absolut = root;
+            absolut2 = root2;
+            d3.select("#absolut").text("Absolute Differenz: " + root.name + " " + yearString + " " + "-"  + " " + root2.name
+                + " " + yearString2 + " = " + ((root.value-root2.value)/ 1000000000).toPrecision(4) + " Mia.");
+            d3.select("#absolut2").text("Absolute Differenz: " + root2.name + " " + yearString + " " + "-"  + " " + root.name
+                + " " + yearString2 + " = " + ((root2.value-root.value)/ 1000000000).toPrecision(4) + " Mia.");
+            break;
     }
 
 }
 
-darstellung(menu);
+
+
 
 

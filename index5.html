@@ -24,11 +24,17 @@
     </div>
 
     <div class="container-fluid bg-2 text-center">
-        <ul>
-            <li><button onclick="darstellung(0)">Vergleich Einnahmen/Ausagben</button></li>
-            <li><button onclick="darstellung(1)">Vergleich Einnahmen</button></li>
-            <li><button onclick="darstellung(2)">Vergleich Ausagben</button></li>
-        </ul>
+        <div id="centerMenu">
+            <ul>
+                <li><button id="button0" onclick="darstellung(0)">Vergleich Einnahmen/Ausagben</button></li>
+                <li><button id="button1" onclick="darstellung(1)">Vergleich Einnahmen</button></li>
+                <li><button id="button2" onclick="darstellung(2)">Vergleich Ausagben</button></li>
+                <li><button id="button3" onclick="darstellung(3)">Vergleich</button></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="container-fluid bg-3 text-center">
         <h3 class="margin">UNSERE VISUALISIERUNG</h3>
         <h4 id="titleGraph" class="margin">VERGLEICH EINNAHMEN/AUSGABEN</h4>
         <div class="boxes rowA col-xs-6">
@@ -39,6 +45,8 @@
                         <div id="chart" class="center-block">
                         </div>
                     </div>
+                    <div id="absolut"></div>
+                    <div id="relativ"></div>
                 </div>
             </div>
         </div>
@@ -50,6 +58,8 @@
                         <div id="chart2" class="center-block">
                         </div>
                     </div>
+                    <div id="absolut2"></div>
+                    <div id="relativ2"></div>
                 </div>
             </div>
         </div>
@@ -58,7 +68,7 @@
             <div class="boxes rowA col-xs-6">
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        <select id="einaus" onchange="EinAusagben()">
+                        <select id="einaus" onchange="EinAusgaben()">
                             <option value="0">Einnahmen</option>
                             <option value="1">Ausgaben nach Aufgabengebiet</option>
                         </select>
@@ -85,7 +95,7 @@
             <div class="boxes rowA col-xs-6">
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        <select id="einaus2" onchange="EinAusagben2()">
+                        <select id="einaus2" onchange="EinAusgaben2()">
                             <option value="0">Einnahmen</option>
                             <option value="1">Ausgaben nach Aufgabengebiet</option>
                         </select>
@@ -115,11 +125,10 @@
             <div class="boxes rowA col-xs-12">
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        <select id="einaus3" onchange="EinAusagben3()">
+                        <select id="einaus3" onchange="EinAusgaben3()">
                             <option value="0">Einnahmen</option>
                             <option value="1">Ausgaben nach Aufgabengebiet</option>
                         </select>
-
                         <select id="year3" onchange="newYear3()">
                             <option value="0">2007</option>
                             <option value="1">2008</option>
@@ -143,10 +152,6 @@
         </div>
     </div>
 
-    <div class="container-fluid bg-3 text-center">
-
-    </div>
-
     <footer class="container-fluid bg-4 text-center">
         <p><span>Quelle - Eidgenössische Finanzverwaltung, Bundesfinanzen - Einnahmen und Ausgaben,
             <a href="https://www.efv.admin.ch/dam/efv/de/dokumente/Finanzberichte/Daten/OGD/Einnahmen_Ausgaben_Bund.csv.download.csv/Einnahmen_Ausgaben_Bund.csv">Link Daten</a>
@@ -156,6 +161,6 @@
 
 
 </body>
-<script src="grafik2.js"></script>
 <script src="inputs.js"></script>
 <script src="static.js"></script>
+<script src="grafik2.js"></script>
