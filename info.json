@@ -1,6 +1,6 @@
 {
 "title": "Visualisierung der Ein- und Ausgaben des Bundes",
-"description": "Die Applikation zeigt die relative Grösse der einzelnen Ein- und Ausgaben des Bundes. Ausserdem kann man durch die doppelte Grafik zwei verschiedene Kategorien vergleichen. Die Zoom-funktion erlaubt es schnell die Kategorien zu wechseln und so interaktiv die Daten auszuwerten.",
+"description": "Die Applikation zeigt die relative Grösse der einzelnen Ein- und Ausgaben des Bundes. Ausserdem kann man durch die doppelte Grafik zwei verschiedene Kategorien vergleichen. Die Zoom-Funktion erlaubt es schnell die Kategorien zu wechseln und so interaktiv die Daten auszuwerten. Die verwendeten Daten wurden in den Jahren 2007 bis 2017 erfasst.",
 "authors": [
     {"name": "Christoph Nötzli", "email": "christoph.noetzli@students.unibe.ch"},
     {"name": "Lorenzo Wipfli", "email": "lorenzo.wipfli@students.unibe.ch"}
