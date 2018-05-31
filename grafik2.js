@@ -31,6 +31,13 @@ var x = d3.scale.linear()
 var y = d3.scale.sqrt()
     .range([0, radius]);
 
+
+var x2 = d3.scale.linear()
+    .range([0, 2 * Math.PI]);
+
+var y2 = d3.scale.sqrt()
+    .range([0, radius]);
+
 var b = {
     w: 175, h: 30, s: 3, t: 10
 };
@@ -74,10 +81,10 @@ var arc = d3.svg.arc()
     .outerRadius(function(d) { return Math.max(0, y(d.y + d.dy)); });
 
 var arc2 = d3.svg.arc()
-    .startAngle(function(d) { return Math.max(0, Math.min(2 * Math.PI, x(d.x))); })
-    .endAngle(function(d) { return Math.max(0, Math.min(2 * Math.PI, x(d.x + d.dx))); })
-    .innerRadius(function(d) { return Math.max(0, y(d.y)); })
-    .outerRadius(function(d) { return Math.max(0, y(d.y + d.dy)); });
+    .startAngle(function(d) { return Math.max(0, Math.min(2 * Math.PI, x2(d.x))); })
+    .endAngle(function(d) { return Math.max(0, Math.min(2 * Math.PI, x2(d.x + d.dx))); })
+    .innerRadius(function(d) { return Math.max(0, y2(d.y)); })
+    .outerRadius(function(d) { return Math.max(0, y2(d.y + d.dy)); });
 
 var node;
 var root;
@@ -220,7 +227,6 @@ function change(){
         .duration(1000)
         .attrTween("d", arcTweenZoom(root));
 
-    /* draw heirarchy */
     var sequenceArray = getAncestors(root);
     updateBreadcrumbs(sequenceArray);
 
@@ -247,7 +253,6 @@ function change(){
         .duration(1000)
         .attrTween("d", arcTweenZoom2(root2));
 
-    /* draw heirarchy */
     var sequenceArray = getAncestors(root2);
     updateBreadcrumbs(sequenceArray);
 
@@ -277,7 +282,6 @@ function change2(){
         .duration(1000)
         .attrTween("d", arcTweenZoom2(root2));
 
-    /* draw heirarchy */
     var sequenceArray = getAncestors(root2);
     updateBreadcrumbs(sequenceArray);
 
@@ -306,7 +310,6 @@ function change3(){
         .duration(1000)
         .attrTween("d", arcTweenZoom(root));
 
-    /* draw heirarchy */
     var sequenceArray = getAncestors(root);
     updateBreadcrumbs(sequenceArray);
 
@@ -330,6 +333,60 @@ function change3(){
     }
 }
 
+function change4(){
+    path.transition()
+        .duration(1000)
+        .attrTween("d", arcTweenZoom(root));
+
+    var sequenceArray = getAncestors(root);
+    updateBreadcrumbs(sequenceArray);
+
+    var value = document.getElementById("countsize3").value === "0"
+        ? function() { return 1; }
+        : function(d) { return d.size; };
+
+    path.data(partition.value(value).nodes)
+        .transition()
+        .duration(1000)
+        .attrTween("d", arcTweenData3);
+
+    total = root.value;
+
+    if(percentonoff == 0) {
+        percentonoff = 1;
+        d3.select("#gesamtEinAus").text(root.name + " " + yearString + ", Total: " + (root.value/ 1000000000).toPrecision(4) + " Mia.");
+    } else {
+        percentonoff = 0;
+        d3.select("#gesamtEinAus").text(root.name+ " " + yearString);
+    }
+
+    path2.transition()
+        .duration(1000)
+        .attrTween("d", arcTweenZoom2(root2));
+
+    var sequenceArray = getAncestors(root2);
+    updateBreadcrumbs(sequenceArray);
+
+    var value = document.getElementById("countsize3").value === "0"
+        ? function() { return 1; }
+        : function(d) { return d.size; };
+
+    path2.data(partition.value(value).nodes)
+        .transition()
+        .duration(1000)
+        .attrTween("d", arcTweenData4);
+
+    total2 = root2.value;
+
+    if(percentonoff2 == 0) {
+        percentonoff2 = 1;
+        d3.select("#gesamtEinAus2").text(root2.name + " " + yearString2 + ", Total: " + (root2.value/ 1000000000).toPrecision(4) + " Mia.");
+    } else {
+        percentonoff2 = 0;
+        d3.select("#gesamtEinAus2").text(root2.name+ " " + yearString2);
+    }
+}
+
 
 function click(d) {
     node = d;
@@ -343,8 +400,8 @@ function click(d) {
 
         d3.select("#absolut").text("Absolute Differenz: " + absolut.name + " " + yearString + " " + "-"  + " " + absolut2.name
             + " " + yearString2 + " = " + ((absolut.value-absolut2.value)/ 1000000000).toPrecision(4) + " Mia.");
-        d3.select("#absolut2").text("Absolute Differenz: " + absolut2.name + " " + yearString + " " + "-"  + " " + absolut.name
-            + " " + yearString2 + " = " + ((absolut2.value-absolut.value)/ 1000000000).toPrecision(4) + " Mia.");
+        d3.select("#absolut2").text("Absolute Differenz: " + absolut2.name + " " + yearString2 + " " + "-"  + " " + absolut.name
+            + " " + yearString + " = " + ((absolut2.value-absolut.value)/ 1000000000).toPrecision(4) + " Mia.");
     } else {
         d3.select("#gesamtEinAus").text(d.name+ " " + yearString);
     }
@@ -355,7 +412,7 @@ function click2(d) {
     absolut2 = d;
     path2.transition()
         .duration(1000)
-        .attrTween("d", arcTweenZoom(d));
+        .attrTween("d", arcTweenZoom2(d));
 
     if(percentonoff2 == 1) {
         d3.select("#gesamtEinAus2").text(absolut2.name + " " + yearString2 + ", Total: " + (absolut2.value/ 1000000000).toPrecision(4) + " Mia.");
@@ -403,11 +460,9 @@ function mouseover(d){
     var sequenceArray = getAncestors(d);
     updateBreadcrumbs(sequenceArray, valueString);
 
-    // Fade all the segments.
     d3.selectAll("path")
         .style("opacity", 0.3);
 
-    // Then highlight only those that are an ancestor of the current segment.
     vis.selectAll("path")
         .filter(function(node) {
             return (sequenceArray.indexOf(node) >= 0);
@@ -436,22 +491,18 @@ function mouseover2(d){
     var percentageString = percentage + "%";
     var percent = Math.round(1000 * d.value / total2) / 10;
     if(percentonoff2 == 1){
-        tooltip2.text(d.name + " " + valueString + " ("  + percentageString + ")")
-            .style("opacity", 0.8);
+        tooltip2.text(d.name + " " + valueString + " ("  + percentageString + ")").style("opacity", 0.8);
     } else {
-        tooltip2.text(d.name)
-            .style("opacity", 0.8);
+        tooltip2.text(d.name).style("opacity", 0.8);
     }
 
 
     var sequenceArray = getAncestors(d);
     updateBreadcrumbs(sequenceArray, valueString);
 
-    // Fade all the segments.
     d3.selectAll("path")
         .style("opacity", 0.3);
 
-    // Then highlight only those that are an ancestor of the current segment.
     vis2.selectAll("path")
         .filter(function(node) {
             return (sequenceArray.indexOf(node) >= 0);
@@ -504,7 +555,7 @@ function updateVisualization(currentYear,EinnahmenAusgaben,gr){
         path2 = vis2.datum(root2).selectAll("path")
             .data(partition.nodes)
             .enter().append("path")
-            .attr("d", arc)
+            .attr("d", arc2)
             .style("fill", function(d) { return color((d.children ? d : d.parent).name); })
             .each(stash)
             .on("click", click2)
@@ -516,7 +567,7 @@ function updateVisualization(currentYear,EinnahmenAusgaben,gr){
                 tooltip2.style("opacity", 0);
             });
 
-        total2 = root.value;
+        total2 = root2.value;
         absolut2 = root2;
     }
     var valueString = getNewValue();
@@ -550,7 +601,7 @@ function updateVisualization(currentYear,EinnahmenAusgaben,gr){
 function darstellung(m){
     switch (m){
         case 0:
-            d3.select("#titleGraph").text("VERGLEICH EINNAHMEN/AUSGABEN");
+            d3.select("#titleGraph").text("EINNAHMEN/AUSGABEN");
             document.getElementById("button0").style.border = "2px solid black";
             document.getElementById("button1").style.border = "none";
             document.getElementById("button2").style.border = "none";
