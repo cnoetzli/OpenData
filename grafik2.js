@@ -589,8 +589,8 @@ function updateVisualization(currentYear,EinnahmenAusgaben,gr){
 
             d3.select("#absolut").text("Absolute Differenz: " + absolut.name + " " + yearString + " " + "-"  + " " + absolut2.name
                 + " " + yearString2 + " = " + ((absolut.value-absolut2.value)/ 1000000000).toPrecision(4) + " Mia.");
-            d3.select("#absolut2").text("Absolute Differenz: " + absolut2.name + " " + yearString + " " + "-"  + " " + absolut.name
-                + " " + yearString2 + " = " + ((absolut2.value-absolut.value)/ 1000000000).toPrecision(4) + " Mia.");
+            d3.select("#absolut2").text("Absolute Differenz: " + absolut2.name + " " + yearString2 + " " + "-"  + " " + absolut.name
+                + " " + yearString + " = " + ((absolut2.value-absolut.value)/ 1000000000).toPrecision(4) + " Mia.");
         } else {
             d3.select("#gesamtEinAus2").text(root2.name+ " " + yearString2);
         }
